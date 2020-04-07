@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Real_Estate_Managment_Software
+namespace Real_Estate_Management_Software___Milestone_1
 {
     public partial class Form1 : Form
     {

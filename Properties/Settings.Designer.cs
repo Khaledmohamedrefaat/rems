@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Real_Estate_Managment_Software.Properties
+namespace Real_Estate_Management_Software___Milestone_1.Properties
 {
 
 
