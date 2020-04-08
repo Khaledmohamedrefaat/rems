@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Real_Estate_Management_Software___Milestone_1.Properties
+namespace Real_Estate_Management_Software.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace Real_Estate_Management_Software___Milestone_1.Properties
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Real_Estate_Management_Software___Milestone_1.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Real_Estate_Management_Software.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

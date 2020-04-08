@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Real_Estate_Management_Software___Milestone_1
+namespace Real_Estate_Management_Software
 {
     static class Program
     {
