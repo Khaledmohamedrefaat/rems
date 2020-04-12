@@ -8,17 +8,19 @@ namespace Real_Estate_Management_Software.DatabaseModels
 {
     public class SoldModel : TransactionModel
     {
+        public int InsallDeposit;
+        public int InstallDuration;
+        public int InstallPrice;
 
         public SoldModel() : base()
         {
 
         }
-        public int InsallDeposit;
-        public int InstallDuration;
-        public SoldModel(string status, DateTime transactionTime, int assetId, int amountCollected, string nationalID, int installDeposit, int installDuration) : base(status, transactionTime, assetId, amountCollected, nationalID)
+        public SoldModel(string status, DateTime transactionTime, SIPair assetId, int amountCollected, string nationalID, int installDeposit, int installDuration, int installPrice) : base(status, transactionTime, assetId, amountCollected, nationalID)
         {
             this.InsallDeposit = installDeposit;
             this.InstallDuration = installDuration;
+            this.InstallPrice = installPrice;
         }
     }
 }

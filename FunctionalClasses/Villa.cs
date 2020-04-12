@@ -9,13 +9,14 @@ namespace Real_Estate_Management_Software.FunctionalClasses
 {
     public class Villa : Asset
     {
-
+        public VillaModel Model;
         public Villa() : base()
         {
 
         }
-        public Villa(VillaModel model) : base(model)
+        public Villa(VillaModel model)
         {
+            this.Model = model;
         }
     }
 }

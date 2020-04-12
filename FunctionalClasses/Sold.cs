@@ -9,13 +9,14 @@ namespace Real_Estate_Management_Software.FunctionalClasses
 {
     public class Sold : Transaction
     {
-
+        public SoldModel Model;
         public Sold() : base()
         {
 
         }
-        public Sold(SoldModel model) : base(model)
+        public Sold(SoldModel model) 
         {
+            this.Model = model;
         }
     }
 }

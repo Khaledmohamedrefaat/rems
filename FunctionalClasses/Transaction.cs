@@ -9,15 +9,9 @@ namespace Real_Estate_Management_Software.FunctionalClasses
 {
     public abstract class Transaction
     {
-        TransactionModel Model;
-
         public Transaction() 
         {
 
-        }
-        public Transaction(TransactionModel model)
-        {
-            this.Model = model;
         }
 
         public async Task<string> Cancel()

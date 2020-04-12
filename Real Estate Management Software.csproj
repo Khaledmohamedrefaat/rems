@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3F341300-866A-40EF-9BC4-192F8AEC9522}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>Real_Estate_Management_Software</RootNamespace>
     <AssemblyName>Real Estate Management Software</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -58,7 +58,7 @@
     <ApplicationIcon>Streamlineicons-Streamline-Ux-Free-Real-estate-house.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>238B40F06312936C1F6D0A9D343C21B94D267CF5</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>95BFF3BAFD02917099C1994B0635EA7E23E0D194</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Real Estate Management Software_TemporaryKey.pfx</ManifestKeyFile>
@@ -73,7 +73,7 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Crc32C.NET, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
@@ -127,6 +127,7 @@
     <Compile Include="DatabaseModels\AssetModel.cs" />
     <Compile Include="DatabaseModels\BuildingModel.cs" />
     <Compile Include="DatabaseModels\FactoryModel.cs" />
+    <Compile Include="DatabaseModels\ImageModel.cs" />
     <Compile Include="DatabaseModels\LandModel.cs" />
     <Compile Include="DatabaseModels\RentalModel.cs" />
     <Compile Include="DatabaseModels\SoldModel.cs" />
@@ -140,6 +141,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2.Designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
     <Compile Include="FunctionalClasses\AgriculturalLand.cs" />
     <Compile Include="FunctionalClasses\Apartment.cs" />
     <Compile Include="FunctionalClasses\Asset.cs" />
@@ -152,10 +159,40 @@
     <Compile Include="FunctionalClasses\Store.cs" />
     <Compile Include="FunctionalClasses\Transaction.cs" />
     <Compile Include="FunctionalClasses\Villa.cs" />
+    <Compile Include="ListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ListItem.Designer.cs">
+      <DependentUpon>ListItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="viewAllForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="viewAllForm.Designer.cs">
+      <DependentUpon>viewAllForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="viewApartsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="viewApartsForm.Designer.cs">
+      <DependentUpon>viewApartsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="viewPhoto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="viewPhoto.Designer.cs">
+      <DependentUpon>viewPhoto.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListItem.resx">
+      <DependentUpon>ListItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -166,6 +203,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="viewAllForm.resx">
+      <DependentUpon>viewAllForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="viewApartsForm.resx">
+      <DependentUpon>viewApartsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="viewPhoto.resx">
+      <DependentUpon>viewPhoto.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -177,6 +223,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Real Estate Management Software_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

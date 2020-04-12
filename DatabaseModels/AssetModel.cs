@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,10 @@ namespace Real_Estate_Management_Software.DatabaseModels
 {
     public class SIPair
     {
+        /*
+        [BsonId]
+        public Guid Mongo_id;
+        */
         public string Typ;
         public int Id;
         public SIPair(string typ, int id)
@@ -28,7 +33,12 @@ namespace Real_Estate_Management_Software.DatabaseModels
         public List<SIPair> Units { get; set; }
         public List<int> ImagesIds { get; set; }
 
+        public int price { get; set; }
+
+        public int orderID { get; set; }
         public AssetModel(){
+            Units = new List<SIPair>();
+            ImagesIds = new List<int>();
         }
         public AssetModel(int area, string status, string address, List<SIPair> units, List<int> imagesIds)
         {

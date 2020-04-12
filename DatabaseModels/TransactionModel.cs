@@ -14,7 +14,7 @@ namespace Real_Estate_Management_Software.DatabaseModels
         public int Id { get; set; }
         public string Status { get; set; }
         public DateTime TransactionTime { get; set; }
-        public int AssetId { get; set; }
+        public SIPair AssetId { get; set; }
         public int AmountCollected { get; set; }
         public string NationalID { get; set; }
 
@@ -22,7 +22,7 @@ namespace Real_Estate_Management_Software.DatabaseModels
         {
 
         }
-        public TransactionModel(string status, DateTime transactionTime, int assetId, int amountCollected, string nationalID)
+        public TransactionModel(string status, DateTime transactionTime, SIPair assetId, int amountCollected, string nationalID)
         {
             this.Status = status;
             this.TransactionTime = transactionTime;

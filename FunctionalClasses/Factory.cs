@@ -9,13 +9,15 @@ namespace Real_Estate_Management_Software.FunctionalClasses
 {
     public class Factory : Asset
     {
+        public FactoryModel Model;
 
         public Factory() : base()
         {
 
         }
-        public Factory(FactoryModel model) : base(model)
+        public Factory(FactoryModel model)
         {
+            this.Model = model;
         }
     }
 }

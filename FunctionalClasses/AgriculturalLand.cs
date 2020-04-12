@@ -9,12 +9,14 @@ namespace Real_Estate_Management_Software.FunctionalClasses
 {
     public class AgriculturalLand : Asset
     {
+        public AgriculturalLandModel Model;
         public AgriculturalLand() : base()
         {
 
         }
-        public AgriculturalLand(AgriculturalLandModel model) : base(model)
+        public AgriculturalLand(AgriculturalLandModel model)
         {
+            this.Model = model;
         }
     }
 }

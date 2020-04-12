@@ -16,7 +16,7 @@ namespace Real_Estate_Management_Software.DatabaseModels
         {
 
         }
-        public RentalModel(string status, DateTime transactionTime, int assetId, int amountCollected, string nationalID, int price, int insurance, DateTime end) : base(status, transactionTime, assetId, amountCollected, nationalID)
+        public RentalModel(string status, DateTime transactionTime, SIPair assetId, int amountCollected, string nationalID, int price, int insurance, DateTime end) : base(status, transactionTime, assetId, amountCollected, nationalID)
         {
             this.Price = price;
             this.Insurance = insurance;

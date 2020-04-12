@@ -41,22 +41,39 @@ namespace Real_Estate_Management_Software.ConnectionClasses
         public async Task<T> LoadRecordById<T>(string table, int id)
         {
             var collection = db.GetCollection<T>(table);
-            var filter = Builders<T>.Filter.Eq("id", id);
+            var filter = Builders<T>.Filter.Eq("Id", id);
             var result = await collection.FindAsync(filter);
 
             return result.First();
         }
 
-        [Obsolete]
-        public async Task<string> UpsertRecord<T>(string table, Guid id, T record)
+
+        public async Task<string> UpdateRecord<T>(string table, int id, T _, string field, string value)
         {
             var collection = db.GetCollection<T>(table);
-            var result = await collection.ReplaceOneAsync(
-                new BsonDocument("_id", id),
-                record,
-                new UpdateOptions { IsUpsert = true });
-            return "Upserted Successfully";
+            var filter = Builders<T>.Filter.Eq("Id", id);
+            var update = Builders<T>.Update.Set(field, value);
+            await collection.UpdateOneAsync(filter, update);
+            return "Updated Successfully";
         }
+        public async Task<string> UpdateRecord<T>(string table, int id, T _, string field, int value)
+        {
+            var collection = db.GetCollection<T>(table);
+            var filter = Builders<T>.Filter.Eq("Id", id);
+            var update = Builders<T>.Update.Set(field, value);
+            await collection.UpdateOneAsync(filter, update);
+            return "Updated Successfully";
+        }
+        public async Task<string> UpdateRecord<T>(string table, Guid id, T _, string field, int value)
+        {
+            var collection = db.GetCollection<T>(table);
+            var filter = Builders<T>.Filter.Eq("_id", id);
+            var update = Builders<T>.Update.Set(field, value);
+            await collection.UpdateOneAsync(filter, update);
+            return "Updated Successfully";
+        }
+
+
         public async Task<string> DeleteRecord<T>(string table, Guid id)
         {
             var collection = db.GetCollection<T>(table);
@@ -65,6 +82,7 @@ namespace Real_Estate_Management_Software.ConnectionClasses
             await collection.DeleteOneAsync(filter);
             return "Deleted Successfully";
         }
+
         public async Task<string> DeleteRecord<T>(string table, int id)
         {
             var collection = db.GetCollection<T>(table);
@@ -81,14 +99,6 @@ namespace Real_Estate_Management_Software.ConnectionClasses
             return ret;
         }
 
-        public async Task<string> UpdateRecord<T>(string table, Guid id, T _, string field, int value)
-        {
-            var collection = db.GetCollection<T>(table);
-            var filter = Builders<T>.Filter.Eq("_id", id);
-            var update = Builders<T>.Update.Set(field, value);
-            await collection.UpdateOneAsync(filter, update);
-            return "Updated Successfully";
-        }
         public async Task<int> GetNextSeqVal(string sequenceName)
         {
             var recs = await LoadRecords<Seq>("Sequences");

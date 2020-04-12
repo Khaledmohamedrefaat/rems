@@ -9,13 +9,14 @@ namespace Real_Estate_Management_Software.FunctionalClasses
 {
     public class Land : Asset
     {
-
+        public LandModel Model;
         public Land() : base()
         {
 
         }
-        public Land(LandModel model) : base(model)
+        public Land(LandModel model)
         {
+            this.Model = model;
         }
     }
 }

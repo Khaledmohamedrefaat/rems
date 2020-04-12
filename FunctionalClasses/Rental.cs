@@ -9,13 +9,14 @@ namespace Real_Estate_Management_Software.FunctionalClasses
 {
     public class Rental : Transaction
     {
-
+        public RentalModel Model;
         public Rental() : base()
         {
 
         }
-        public Rental(RentalModel model) : base(model)
+        public Rental(RentalModel model)
         {
+            this.Model = model;
         }
     }
 }

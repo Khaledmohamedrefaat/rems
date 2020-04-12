@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Real_Estate_Management_Software.DatabaseModels
 {
+    
     public class BuildingModel : AssetModel
     {
         public BuildingModel() : base()
