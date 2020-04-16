@@ -19,12 +19,23 @@ namespace Real_Estate_Managment_Software___GUI
         public static ListItem lst = new ListItem(new Building(), "");
         public static Panel controlPanel;
         public string table;
+        public void Freeze()
+        {
+            pnl_MarginPanel.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            pnl_MarginPanel.Enabled = true;
+        }
         public MainSubMenu(string table)
         {
             InitializeComponent();
             this.Text = table;
             this.table = table;
             lbl_Menu_Title.Text = "All " + table;
+            if(table == "Factories")
+                btn_NewBuilding.Text = "  New Factory";
+            else
             btn_NewBuilding.Text = "  New " + table.Remove(table.Length - 1);
         }
 
@@ -56,23 +67,13 @@ namespace Real_Estate_Managment_Software___GUI
                 searchModel.Id = Convert.ToInt32(tbx_Filter_ID.Text);
             else
                 searchModel.Id = -1;
-            /*
-            if (tbx_Filter_Area.Text != "")
-                searchModel.Area = Convert.ToInt32(tbx_Filter_Area.Text);
-            else
-            */
                 searchModel.Area = -1;
-            /*
-            if (tbx_Filter_Price.Text != "")
-                searchModel.price = Convert.ToInt32(tbx_Filter_Price.Text);
-            else
-            */
                 searchModel.price = -1;
             searchModel.Address = tbx_Filter_Address.Text;
             searchModel.Status = "";
-            ldbx.Start();
+                Freeze();
             await RefreshContent(table);
-            ldbx.Abort();
+                UnFreeze();
             }
             catch (Exception _)
             {
@@ -81,7 +82,9 @@ namespace Real_Estate_Managment_Software___GUI
         }
 
         public static async Task<string> RefreshContent(string table){
-            try { 
+            try {
+                if (searchModel == null)
+                    return "Done";
             var retList = await Building.getAllModels(searchModel, table);
             controlPanel.Controls.Clear();
             foreach (BuildingModel model in retList){
@@ -108,10 +111,10 @@ namespace Real_Estate_Managment_Software___GUI
         {
             try { 
             MongoDBConnection db = new MongoDBConnection();
-            ldbx.Start();
-            var nextId = await db.GetNextSeqVal("Images");
-            ldbx.Abort();
-            using (AddRecord addRecord = new AddRecord(true, "Main", new SIPair(table, nextId), table))
+                Freeze();
+                var nextId = await db.GetNextSeqVal("Images");
+                UnFreeze();
+                using (AddRecord addRecord = new AddRecord(true, "Main", new SIPair(table, nextId), table))
                 addRecord.ShowDialog();
             }
             catch (Exception _)
@@ -134,22 +137,17 @@ namespace Real_Estate_Managment_Software___GUI
             searchModel.price = -1;
             searchModel.Address = "";
             searchModel.Status = "";
-            
 
-            ldbx.Start();
+                Freeze();
             await RefreshContent(table);
-            ldbx.Abort();
+                UnFreeze();
             }
             catch (Exception _)
             {
                 MessageBox.Show("Cannot Reach The Database. Check Your Internet Connection.");
             }
         }
-        static Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
-        {
-            Application.Run(new LoadingBox());
-        }
+
         private void label6_Click(object sender, EventArgs e)
         {
 

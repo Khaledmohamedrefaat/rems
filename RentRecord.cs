@@ -23,6 +23,14 @@ namespace Real_Estate_Managment_Software___GUI
             this.building = building;
             this.from = from;
         }
+        public void Freeze()
+        {
+            tableLayoutPanel1.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            tableLayoutPanel1.Enabled = true;
+        }
         public bool checkFilter(){
             if (!Validator.IsName(tbx_Name.Text))
                 return false;
@@ -38,21 +46,17 @@ namespace Real_Estate_Managment_Software___GUI
                 return false;
             return true;
         }
-        Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
-        {
-            Application.Run(new LoadingBox());
-        }
+
         private async void button12_Click(object sender, EventArgs e){
             try { 
             if (!checkFilter())
                 return;
             RentalModel model = new RentalModel();
             MongoDBConnection db = new MongoDBConnection();
-            ldbx.Start();
+                Freeze();
             var nextId = await db.GetNextSeqVal("Buildings");
-            ldbx.Abort();
-            model.Id = nextId;
+                UnFreeze();
+                model.Id = nextId;
             model.AssetId = new SIPair("Buildings", building.Model.Id);
             model.AmountCollected = Convert.ToInt32(tbx_TotalCash.Text);
             model.Name = tbx_Name.Text;
@@ -66,39 +70,39 @@ namespace Real_Estate_Managment_Software___GUI
             model.Notes = richTextBox1.Text;
             if (from == "Buildings")
             {
-            ldbx.Start();
-                model.AssetId = new SIPair("Buildings", building.Model.Id);
+                    Freeze();
+                    model.AssetId = new SIPair("Buildings", building.Model.Id);
                 await Asset.Rent(new Rental(model), building.Model, from, building.Model.Id);
                 string bx = from.Remove(from.Length - 1);
-                ldbx.Abort();
-                MessageBox.Show("Rented " + bx + " Successfully");
+                    UnFreeze();
+                    MessageBox.Show("Rented " + bx + " Successfully");
             }
             else if (from == "Apartments")
             {
-                ldbx.Start();
-                model.AssetId = new SIPair("Apartments", building.Apartments[0].Model.Id);
+                    Freeze(); 
+                    model.AssetId = new SIPair("Apartments", building.Apartments[0].Model.Id);
                 await Asset.Rent(new Rental(model), building.Apartments[0].Model, from, building.Apartments[0].Model.Id);
                 string bx = from.Remove(from.Length - 1);
-                ldbx.Abort();
-                MessageBox.Show("Rented " + bx + " Successfully");
+                    UnFreeze();
+                    MessageBox.Show("Rented " + bx + " Successfully");
             }
             else if (from == "Storages")
             {
-                ldbx.Start();
-                model.AssetId = new SIPair("Storages", building.Storages[0].Model.Id);
+                    Freeze();
+                    model.AssetId = new SIPair("Storages", building.Storages[0].Model.Id);
                 await Asset.Rent(new Rental(model), building.Storages[0].Model, from, building.Storages[0].Model.Id);
                 string bx = from.Remove(from.Length - 1);
-                ldbx.Abort(); 
-                MessageBox.Show("Rented " + bx + " Successfully");
+                    UnFreeze();
+                    MessageBox.Show("Rented " + bx + " Successfully");
             }
             else if (from == "Stores")
             {
-                ldbx.Start();
-                model.AssetId = new SIPair("Stores", building.Stores[0].Model.Id);
+                    Freeze();
+                    model.AssetId = new SIPair("Stores", building.Stores[0].Model.Id);
                 await Asset.Rent(new Rental(model), building.Stores[0].Model, from, building.Stores[0].Model.Id);
                 string bx = from.Remove(from.Length - 1);
-                ldbx.Abort();
-                MessageBox.Show("Rented " + bx + " Successfully");
+                    UnFreeze();
+                    MessageBox.Show("Rented " + bx + " Successfully");
             }
             Close();
             }

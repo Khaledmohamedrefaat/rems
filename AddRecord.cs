@@ -18,6 +18,16 @@ namespace Real_Estate_Managment_Software___GUI
 
     public partial class AddRecord : Form
     {
+        public void Freeze()
+        {
+            foreach (Control c in panel2.Controls)
+                c.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            foreach (Control c in panel2.Controls)
+                c.Enabled = true;
+        }
         static List<SIPair> addUnits = new List<SIPair>();
         List<int> addImages = new List<int>();
         static Label unitsLbl;
@@ -63,7 +73,7 @@ namespace Real_Estate_Managment_Software___GUI
 
         private void button8_Click(object sender, EventArgs e)
         {
-            using (AddRecord addRecord = new AddRecord(false, "Unit", assetId, table))
+            using (AddRecord addRecord = new AddRecord(false, "Unit", new SIPair(table, assetId.Id), table))
                 addRecord.ShowDialog();
         }
 
@@ -89,10 +99,9 @@ namespace Real_Estate_Managment_Software___GUI
 
                 var tmp = model.Id;
                 model.Id = -1;
-                Thread ldbx = new Thread(new ThreadStart(Loading));
-                ldbx.Start();
+                Freeze();
                 var retList = await Building.getAllModels(model, table);
-                ldbx.Abort();
+                UnFreeze();
                 model.Id = tmp;
                 return retList.Count != 0;
             }
@@ -107,10 +116,9 @@ namespace Real_Estate_Managment_Software___GUI
             try { 
             var tmp = model.Id;
             model.Id = -1;
-            Thread ldbx = new Thread(new ThreadStart(Loading));
-            ldbx.Start();
+                Freeze();
             var retList = await Apartment.getAllModels(model, table);
-            ldbx.Abort();
+                UnFreeze();
             model.Id = tmp;
             return retList.Count != 0;
             }
@@ -126,10 +134,9 @@ namespace Real_Estate_Managment_Software___GUI
             try { 
             var tmp = model.Id;
             model.Id = -1;
-            Thread ldbx = new Thread(new ThreadStart(Loading));
-            ldbx.Start();
+                Freeze();
             var retList = await AgriculturalLand.getAllModels(model);
-            ldbx.Abort();
+                UnFreeze();
             model.Id = tmp;
             return retList.Count != 0;
             }
@@ -144,10 +151,9 @@ namespace Real_Estate_Managment_Software___GUI
             try { 
             var tmp = model.Id;
             model.Id = -1;
-            Thread ldbx = new Thread(new ThreadStart(Loading));
-            ldbx.Start();
+                Freeze();
             var retList = await Land.getAllModels(model);
-            ldbx.Abort();
+                UnFreeze();
             model.Id = tmp;
             return retList.Count != 0;
             }
@@ -162,10 +168,9 @@ namespace Real_Estate_Managment_Software___GUI
             try{ 
             var tmp = model.Id;
             model.Id = -1;
-            Thread ldbx = new Thread(new ThreadStart(Loading));
-            ldbx.Start();
+                Freeze();
             var retList = await Villa.getAllModels(model);
-            ldbx.Abort();
+                UnFreeze();
             model.Id = tmp;
             return retList.Count != 0;
             }
@@ -180,10 +185,9 @@ namespace Real_Estate_Managment_Software___GUI
             try { 
             var tmp = model.Id;
             model.Id = -1;
-            Thread ldbx = new Thread(new ThreadStart(Loading));
-            ldbx.Start();
+                Freeze();
             var retList = await Storage.getAllModels(model);
-            ldbx.Abort();
+                UnFreeze();
             model.Id = tmp;
             return retList.Count != 0;
             }
@@ -198,10 +202,9 @@ namespace Real_Estate_Managment_Software___GUI
             try { 
             var tmp = model.Id;
             model.Id = -1;
-            Thread ldbx = new Thread(new ThreadStart(Loading));
-            ldbx.Start();
+                Freeze();
             var retList = await Store.getAllModels(model);
-            ldbx.Abort();
+                UnFreeze();
             model.Id = tmp;
             return retList.Count != 0;
             }
@@ -230,11 +233,10 @@ namespace Real_Estate_Managment_Software___GUI
                 addUnits = new List<SIPair>();
                 model.ImagesIds = addImages;
                 model.assetID = new SIPair("", -1);
-                Thread ldbx = new Thread(new ThreadStart(Loading));
-                ldbx.Start();
+                    Freeze();
                 if (await checkDuplicate(model, table))
                 {
-                    ldbx.Abort();
+                        UnFreeze();
                     MessageBox.Show("This Unit Already Exists.", "Duplicate!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return "Done";
                 }
@@ -256,36 +258,35 @@ namespace Real_Estate_Managment_Software___GUI
                 {
                     ApartmentModel model = new ApartmentModel();
                     MongoDBConnection db = new MongoDBConnection();
-                    Thread ldbx = new Thread(new ThreadStart(Loading));
-                    ldbx.Start();
+                        Freeze();
                     var nextId = await db.GetNextSeqVal(table);
-                    ldbx.Abort();
                     model.Id = nextId;
+                        UnFreeze();
                     model.Area = Convert.ToInt32(textBox1.Text);
                     model.price = Convert.ToInt32(textBox3.Text);
                     model.Address = textBox2.Text;
                     model.ImagesIds = addImages;
                     model.Status = "Available";
                     model.assetID = assetId;
-                    ldbx.Start();
-                    if (await checkDuplicate(model, "Apartments"))
+                        Freeze();
+                        if (await checkDuplicate(model, "Apartments"))
                     {
-                        ldbx.Abort();
-                        if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
+                            UnFreeze();
+                            if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
                         {
                             model.Id = -1;
-                            ldbx.Start();
+                                Freeze();
                             var retList = await Apartment.getAllModels(model, "Apartments");
-                            ldbx.Abort();
+                                UnFreeze();
                             addLabels(retList[0].Id);
                             MessageBox.Show("Added Apartment Successfully");
                             Close();
                         }
                         return "Done";
                     }
-                    ldbx.Start();
+                        Freeze();
                     await Asset.Insert(model, table);
-                    ldbx.Abort();
+                        UnFreeze();
                     addLabels(nextId);
                     MessageBox.Show("Added Apartment Successfully");
                     Close();
@@ -294,10 +295,9 @@ namespace Real_Estate_Managment_Software___GUI
                 {
                     StorageModel model = new StorageModel();
                     MongoDBConnection db = new MongoDBConnection();
-                    Thread ldbx = new Thread(new ThreadStart(Loading));
-                    ldbx.Start();
+                        Freeze();
                     var nextId = await db.GetNextSeqVal(table);
-                    ldbx.Abort();
+                        UnFreeze();
                     model.Id = nextId;
                     model.Area = Convert.ToInt32(textBox1.Text);
                     model.price = Convert.ToInt32(textBox3.Text);
@@ -305,25 +305,25 @@ namespace Real_Estate_Managment_Software___GUI
                     model.ImagesIds = addImages;
                     model.Status = "Available";
                     model.assetID = assetId;
-                    ldbx.Start();
+                        Freeze();
                     if (await checkDuplicate(model))
                     {
-                        ldbx.Abort();
+                            UnFreeze();
                         if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
                         {
                             model.Id = -1;
-                            ldbx.Start();
+                                Freeze();
                             var retList = await Storage.getAllModels(model);
-                            ldbx.Abort();
+                                UnFreeze();
                             addLabels(retList[0].Id);
                             MessageBox.Show("Added Storage Successfully");
                             Close();
                         }
                         return "Done";
                     }
-                    ldbx.Start();
+                        Freeze();
                     await Asset.Insert(model, table);
-                    ldbx.Abort();
+                        UnFreeze();
 
                     addLabels(nextId);
 
@@ -334,37 +334,36 @@ namespace Real_Estate_Managment_Software___GUI
                 {
                     StoreModel model = new StoreModel();
                     MongoDBConnection db = new MongoDBConnection();
-                    Thread ldbx = new Thread(new ThreadStart(Loading));
-                    ldbx.Start();
+                        Freeze();
                     var nextId = await db.GetNextSeqVal(table);
-                    ldbx.Abort();
-                    model.Id = nextId;
+                        UnFreeze();
+                        model.Id = nextId;
                     model.Area = Convert.ToInt32(textBox1.Text);
                     model.price = Convert.ToInt32(textBox3.Text);
                     model.Address = textBox2.Text;
                     model.ImagesIds = addImages;
                     model.Status = "Available";
                     model.assetID = assetId;
-                    ldbx.Start();
-                    if (await checkDuplicate(model))
+                        Freeze();
+                        if (await checkDuplicate(model))
                     {
-                        ldbx.Abort();
-                        if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
+                            UnFreeze();
+                            if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
                         {
                             model.Id = -1;
-                            ldbx.Start();
-                            var retList = await Store.getAllModels(model);
-                            ldbx.Abort();
-                            addLabels(retList[0].Id);
+                                Freeze();
+                                var retList = await Store.getAllModels(model);
+                                UnFreeze();
+                                addLabels(retList[0].Id);
                             MessageBox.Show("Added Store Successfully");
                             Close();
                         }
                         return "Done";
                     }
-                    ldbx.Start();
-                    await Asset.Insert(model, table);
-                    ldbx.Abort();
-                    addLabels(nextId);
+                        Freeze();
+                        await Asset.Insert(model, table);
+                        UnFreeze();
+                        addLabels(nextId);
                     
 
                     MessageBox.Show("Added Store Successfully");
@@ -382,14 +381,15 @@ namespace Real_Estate_Managment_Software___GUI
         }
 
         public void addLabels(int nextId){
-            if (from != "Update")
+            string table = comboBox1.Text;
+            if (from == "Unit")
             {
-                addUnits.Add(new SIPair(table, nextId));
-                if (unitsLbl.Text != "")
-                    unitsLbl.Text += ", ";
-                unitsLbl.Text += nextId.ToString();
+                    addUnits.Add(new SIPair(table, nextId));
+                    if (unitsLbl.Text != "")
+                        unitsLbl.Text += ", ";
+                    unitsLbl.Text += nextId.ToString();
             }
-            else
+            else if(from == "Update")
             {
                 InfoRecord.updBuilding.Model.Units.Add(new SIPair(table, nextId));
                 if (InfoRecord.unitsLabel.Text != "")
@@ -426,11 +426,10 @@ namespace Real_Estate_Managment_Software___GUI
                             return "Done";
                         }
                         base64String = Convert.ToBase64String(imageBytes);
-                        Thread ldbx1 = new Thread(new ThreadStart(Loading));
-                        ldbx1.Start();
+                        Freeze();
                         var chk = await ImageModel.getAllModels(new ImageModel { Content = base64String });
-                        ldbx1.Abort();
-                        if(chk.Count > 0){
+                        UnFreeze();
+                        if (chk.Count > 0){
                             if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
                             {
                                 addImages.Add(chk[0].Id);
@@ -447,10 +446,9 @@ namespace Real_Estate_Managment_Software___GUI
                 MongoDBConnection db = new MongoDBConnection();
                 var nextId = await db.GetNextSeqVal("Images");
                 img.Id = nextId;
-                Thread ldbx = new Thread(new ThreadStart(Loading));
-                ldbx.Start();
+                Freeze();
                 await db.InsertRecord<ImageModel>("Images", img);
-                ldbx.Abort();
+                UnFreeze();
                 addImages.Add(img.Id);
                 if (label2.Text != "")
                     label2.Text += ", ";

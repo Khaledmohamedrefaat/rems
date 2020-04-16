@@ -16,16 +16,21 @@ namespace Real_Estate_Managment_Software___GUI
 {
     public partial class ApartInfo : Form
     {
+        public void Freeze()
+        {
+            tableLayoutPanel1.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            tableLayoutPanel1.Enabled = true;
+        }
+
         Building building;
         int cnt, index;
         List<int> imagesIds = new List<int>();
         bool inUpdate;
         AssetModel updModel;
-        Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
-        {
-            Application.Run(new LoadingBox());
-        }
+        SIPair currAssetId;
         public ApartInfo(Building building)
         {
             InitializeComponent();
@@ -65,14 +70,14 @@ namespace Real_Estate_Managment_Software___GUI
             }
             MongoDBConnection db = new MongoDBConnection();
             List<string> images = new List<string>();
-            ldbx.Start();
+                Freeze();
             foreach (int id in imagesIds)
             {
                 var ret = await db.LoadRecordById<ImageModel>("Images", id);
                 images.Add(ret.Content);
             }
-            ldbx.Abort();
-            using (viewPhoto x = new viewPhoto(images))
+                UnFreeze();
+                using (viewPhoto x = new viewPhoto(images))
                 x.ShowDialog();
             }
             catch (Exception _)
@@ -81,7 +86,7 @@ namespace Real_Estate_Managment_Software___GUI
             }
         }
 
-        private void button12_Click(object sender, EventArgs e)
+        private async void button12_Click(object sender, EventArgs e)
         {
             string from = label2.Text;
             from += "s";
@@ -94,6 +99,16 @@ namespace Real_Estate_Managment_Software___GUI
                 tmp.Stores.Add(building.Stores[index - building.Apartments.Count - building.Storages.Count]);
             using (SellRecord sellRecord = new SellRecord(building, from))
                 sellRecord.ShowDialog();
+            Freeze();
+            MongoDBConnection db = new MongoDBConnection();
+            if (from == "Apartments")
+                building.Apartments[index].Model = await db.LoadRecordById<ApartmentModel>("Apartments", building.Apartments[index].Model.Id);
+            else if (from == "Storages")
+                building.Storages[index - building.Apartments.Count].Model = await db.LoadRecordById<StorageModel>("Storages", building.Storages[index - building.Apartments.Count].Model.Id);
+            else if (from == "Stores")
+                building.Stores[index - building.Apartments.Count - building.Storages.Count].Model = await db.LoadRecordById<StoreModel>("Stores", building.Stores[index - building.Apartments.Count - building.Storages.Count].Model.Id);
+            LoadUnit();
+            UnFreeze();
         }
 
         private async void button4_Click(object sender, EventArgs e)
@@ -105,8 +120,8 @@ namespace Real_Estate_Managment_Software___GUI
             if(lbl_Status.Text == "Sold"){
                 SoldModel model = new SoldModel();
                 MongoDBConnection db = new MongoDBConnection();
-                ldbx.Start();
-                if (from == "Apartments")
+                    Freeze();
+                    if (from == "Apartments")
                     model = await db.LoadRecordById<SoldModel>("Sold", building.Apartments[index].Model.orderID);
 
                 else if (from == "Storages")
@@ -114,8 +129,8 @@ namespace Real_Estate_Managment_Software___GUI
                 
                 else if (from == "Stores")
                     model = await db.LoadRecordById<SoldModel>("Sold", building.Stores[index - building.Apartments.Count - building.Storages.Count].Model.orderID);
-                ldbx.Abort();
-                using (SellInfo sellInfo = new SellInfo(model, "Others"))
+                    UnFreeze();
+                    using (SellInfo sellInfo = new SellInfo(model, "Others"))
                     sellInfo.ShowDialog();
 
             }
@@ -123,8 +138,8 @@ namespace Real_Estate_Managment_Software___GUI
             {
                 RentalModel model = new RentalModel();
                 MongoDBConnection db = new MongoDBConnection();
-                ldbx.Start();
-                if (from == "Apartments")
+                    Freeze();
+                    if (from == "Apartments")
                     model = await db.LoadRecordById<RentalModel>("Rentals", building.Apartments[index].Model.orderID);
 
                 else if (from == "Storages")
@@ -132,8 +147,8 @@ namespace Real_Estate_Managment_Software___GUI
 
                 else if (from == "Stores")
                     model = await db.LoadRecordById<RentalModel>("Rentals", building.Stores[index - building.Apartments.Count - building.Storages.Count].Model.orderID);
-                ldbx.Abort();
-                using (RentInfo rentInfo = new RentInfo(model, "Others"))
+                    UnFreeze();
+                    using (RentInfo rentInfo = new RentInfo(model, "Others"))
                     rentInfo.ShowDialog();
             }
             }
@@ -143,7 +158,7 @@ namespace Real_Estate_Managment_Software___GUI
             }
         }
 
-        private void button13_Click(object sender, EventArgs e)
+        private async void button13_Click(object sender, EventArgs e)
         {
             string from = label2.Text;
             from += "s";
@@ -156,6 +171,16 @@ namespace Real_Estate_Managment_Software___GUI
                 tmp.Stores.Add(building.Stores[index - building.Apartments.Count - building.Storages.Count]);
             using (RentRecord sellRecord = new RentRecord(building, from))
                 sellRecord.ShowDialog();
+            Freeze();
+            MongoDBConnection db = new MongoDBConnection();
+            if (from == "Apartments")
+                building.Apartments[index].Model = await db.LoadRecordById<ApartmentModel>("Apartments", building.Apartments[index].Model.Id);
+            else if (from == "Storages")
+                building.Storages[index - building.Apartments.Count].Model = await db.LoadRecordById<StorageModel>("Storages", building.Storages[index - building.Apartments.Count].Model.Id);
+            else if (from == "Stores")
+                building.Stores[index - building.Apartments.Count - building.Storages.Count].Model = await db.LoadRecordById<StoreModel>("Stores", building.Stores[index - building.Apartments.Count - building.Storages.Count].Model.Id);
+            LoadUnit();
+            UnFreeze();
         }
         public bool CheckFilterInput()
         {
@@ -203,25 +228,30 @@ namespace Real_Estate_Managment_Software___GUI
                 updModel.price = Convert.ToInt32(textBox4.Text);
                 updModel.Address = textBox3.Text;
                 updModel.Status = textBox5.Text;
-
-                MongoDBConnection db = new MongoDBConnection();
-                ldbx.Start();
-                if (label2.Text == "Apartment")
+                updModel.assetID = currAssetId;
+                updModel.orderID = Convert.ToInt32(label6.Text);
+                    updModel.ImagesIds = imagesIds;
+                    MongoDBConnection db = new MongoDBConnection();
+                    Freeze(); 
+                    if (label2.Text == "Apartment")
                 {
                     await db.DeleteRecord<ApartmentModel>("Apartments", updModel.Id);
                     await db.InsertRecord("Apartments", updModel);
+                        building.Apartments[index] = new Apartment((ApartmentModel)updModel);
                 }
                 else if (label2.Text == "Storage")
                 {
-                    await db.DeleteRecord<ApartmentModel>("Apartments", updModel.Id);
-                    await db.InsertRecord("Apartments", updModel);
-                }
+                    await db.DeleteRecord<StorageModel>("Storages", updModel.Id);
+                    await db.InsertRecord("Storages", updModel);
+                        building.Storages[index - building.Apartments.Count] = new Storage((StorageModel)updModel);
+                    }
                 else if (label2.Text == "Store")
                 {
-                    await db.DeleteRecord<ApartmentModel>("Apartments", updModel.Id);
-                    await db.InsertRecord("Apartments", updModel);
-                }
-                ldbx.Abort();
+                    await db.DeleteRecord<StoreModel>("Stores", updModel.Id);
+                    await db.InsertRecord("Stores", updModel);
+                        building.Stores[index - building.Apartments.Count - building.Storages.Count] = new Store((StoreModel)updModel);
+                    }
+                    UnFreeze();
                 LoadUnit();
                 MessageBox.Show("Updated Building Successfully");
             }
@@ -247,12 +277,12 @@ namespace Real_Estate_Managment_Software___GUI
                         image.Save(m, image.RawFormat);
                         byte[] imageBytes = m.ToArray();
                         base64String = Convert.ToBase64String(imageBytes);
-                        ldbx.Start();
+                            Freeze();
                         var chk = await ImageModel.getAllModels(new ImageModel { Content = base64String });
                         if (chk.Count > 0)
                         {
-                            ldbx.Abort();
-                            if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
+                                UnFreeze();
+                                if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
                             {
                                 imagesIds.Add(chk[0].Id);
                                 if (label8.Text != "")
@@ -266,12 +296,12 @@ namespace Real_Estate_Managment_Software___GUI
                 ImageModel img = new ImageModel();
                 img.Content = base64String;
                 MongoDBConnection db = new MongoDBConnection();
-                ldbx.Start();
-                var nextId = await db.GetNextSeqVal("Images");
+                    Freeze();
+                    var nextId = await db.GetNextSeqVal("Images");
                 img.Id = nextId;
                 await db.InsertRecord<ImageModel>("Images", img);
-                ldbx.Abort();
-                imagesIds.Add(img.Id);
+                    UnFreeze();
+                    imagesIds.Add(img.Id);
                 if (label8.Text != "")
                     label8.Text += ", ";
                 label8.Text += nextId.ToString();
@@ -303,6 +333,11 @@ namespace Real_Estate_Managment_Software___GUI
                 lbl_Status.Text = textBox5.Text = model.Status;
                 imagesIds = model.ImagesIds;
                 label6.Text = model.orderID.ToString();
+                currAssetId = model.assetID;
+                if (model.assetID == null)
+                    label12.Text = "";
+                else
+                    label12.Text = model.assetID.Typ + " - " + model.assetID.Id;
                 if (label6.Text == "0")
                     button4.Visible = label6.Visible = false;
                 else
@@ -325,6 +360,11 @@ namespace Real_Estate_Managment_Software___GUI
                 lbl_Status.Text = textBox5.Text = model.Status;
                 imagesIds = model.ImagesIds;
                 label6.Text = model.orderID.ToString();
+                currAssetId = model.assetID;
+                if (model.assetID == null)
+                    label12.Text = "";
+                else
+                    label12.Text = model.assetID.Typ + " - " + model.assetID.Id;
                 if (label6.Text == "0")
                     button4.Visible = label6.Visible = false;
                 else
@@ -347,6 +387,11 @@ namespace Real_Estate_Managment_Software___GUI
                 lbl_Status.Text = textBox5.Text = model.Status;
                 imagesIds = model.ImagesIds;
                 label6.Text = model.orderID.ToString();
+                currAssetId = model.assetID;
+                if (model.assetID == null)
+                    label12.Text = "";
+                else
+                label12.Text = model.assetID.Typ + " - " + model.assetID.Id;
                 if (label6.Text == "0")
                     button4.Visible = label6.Visible = false;
                 else

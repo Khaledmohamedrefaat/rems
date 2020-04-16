@@ -22,5 +22,15 @@ namespace Real_Estate_Managment_Software___GUI
             this.CenterToParent();
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

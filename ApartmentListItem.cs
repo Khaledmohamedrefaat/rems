@@ -24,10 +24,14 @@ namespace Real_Estate_Managment_Software___GUI
             this.apartment = apartment;
             this.table = table;
         }
-        Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
+
+        public void Freeze()
         {
-            Application.Run(new LoadingBox());
+            pnl_Main.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            pnl_Main.Enabled = true;
         }
         public void LoadLabels()
         {
@@ -50,28 +54,37 @@ namespace Real_Estate_Managment_Software___GUI
             {
                 await Asset.Delete(apartment, table, apartment.Model.Id);
                 BuildingModel chk = new BuildingModel();
-                chk.Id = apartment.Model.assetID.Id;
-                chk.Area = chk.price = -1;
-                chk.Address = chk.Status = "";
-                string parTable = apartment.Model.assetID.Typ;
-                ldbx.Start();
-                var retList = await Building.getAllModels(chk, parTable);
-                ldbx.Abort();
-                if (retList.Count != 0){
-                    BuildingModel par = retList[0];
-                        foreach(SIPair unit in par.Units)
-                            if(unit.Id == apartment.Model.Id){
-                                par.Units.Remove(unit);
-                                break;
+                    if (apartment.Model.assetID != null)
+                    {
+                        chk.Id = apartment.Model.assetID.Id;
+                        chk.Area = chk.price = -1;
+                        chk.Address = chk.Status = "";
+                        string parTable = apartment.Model.assetID.Typ;
+                        if (parTable != "")
+                        {
+                            Freeze();
+                            var retList = await Building.getAllModels(chk, parTable);
+                            UnFreeze();
+                            if (retList.Count != 0)
+                            {
+                                BuildingModel par = retList[0];
+                                foreach (SIPair unit in par.Units)
+                                    if (unit.Id == apartment.Model.Id)
+                                    {
+                                        par.Units.Remove(unit);
+                                        break;
+                                    }
+                                Freeze();
+                                await Building.UpdateBuilding(par, parTable);
+                                UnFreeze();
                             }
-                    ldbx.Start();
-                    await Building.UpdateBuilding(par, parTable);
-                    ldbx.Abort();
+                        }
+                    }
+                
+                    Freeze();
+                    await ApartmentSubMenu.RefreshContent(table);
+                    UnFreeze();
                 }
-                ldbx.Start();
-                await ApartmentSubMenu.RefreshContent(table);
-                ldbx.Abort();
-            }
             }
             catch (Exception _)
             {
@@ -118,7 +131,36 @@ namespace Real_Estate_Managment_Software___GUI
         private void btn_Add_Click(object sender, EventArgs e)
         {
             Building tmp = new Building();
-            tmp.Apartments.Add(apartment);
+            
+            if (table == "Apartments")
+                tmp.Apartments.Add(apartment);
+            else if (table == "Storages"){
+                StorageModel s = new StorageModel();
+                s.Id = apartment.Model.Id;
+                s.Mongo_id = apartment.Model.Mongo_id;
+                s.Address = apartment.Model.Address;
+                s.Area = apartment.Model.Area;
+                s.assetID = apartment.Model.assetID;
+                s.ImagesIds = apartment.Model.ImagesIds;
+                s.price = apartment.Model.price;
+                s.Status = apartment.Model.Status;
+                s.Units = apartment.Model.Units;
+                tmp.Storages.Add(new Storage(s));
+            }
+            else if (table == "Stores")
+            {
+                StoreModel s = new StoreModel();
+                s.Id = apartment.Model.Id;
+                s.Mongo_id = apartment.Model.Mongo_id;
+                s.Address = apartment.Model.Address;
+                s.Area = apartment.Model.Area;
+                s.assetID = apartment.Model.assetID;
+                s.ImagesIds = apartment.Model.ImagesIds;
+                s.price = apartment.Model.price;
+                s.Status = apartment.Model.Status;
+                s.Units = apartment.Model.Units;
+                tmp.Stores.Add(new Store(s));
+            }
             using (ApartInfo infoRecord = new ApartInfo(tmp))
                 infoRecord.ShowDialog();
         }

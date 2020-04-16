@@ -25,17 +25,25 @@ namespace Real_Estate_Managment_Software___GUI
             this.table = table;
             this.rentModel = rentModel;
         }
+        public void Freeze()
+        {
+            pnl_Main.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            pnl_Main.Enabled = true;
+        }
         public void LoadLabels()
         {
             if(table == "Sold")
             {
-                label3.Text = soldModel.Id.ToString();
+                label3.Text = soldModel.Name.ToString();
                 label4.Text = soldModel.NationalID.ToString();
                 label5.Text = soldModel.AssetId.Typ + " - " + soldModel.AssetId.Id.ToString();
             }
             else
             {
-                label3.Text = rentModel.Id.ToString();
+                label3.Text = rentModel.Name.ToString();
                 label4.Text = rentModel.NationalID.ToString();
                 label5.Text = rentModel.AssetId.Typ + " - " + rentModel.AssetId.Id.ToString();
             }
@@ -66,11 +74,7 @@ namespace Real_Estate_Managment_Software___GUI
             return control.ClientRectangle.Contains(control.PointToClient(MousePosition));
         }
 
-        Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
-        {
-            Application.Run(new LoadingBox());
-        }
+
         private async void btn_Delete_Click(object sender, EventArgs e)
         {
             try { 
@@ -78,20 +82,20 @@ namespace Real_Estate_Managment_Software___GUI
             {
                 if (table == "Sold")
                 {
-                    ldbx.Start();
+                        Freeze();
                     MongoDBConnection db = new MongoDBConnection();
                     await db.DeleteRecord<SoldModel>(table, soldModel.Id);
                     await TransactionSubMenu.RefreshSoldContent();
-                    ldbx.Abort();
-                }
+                        UnFreeze();
+                    }
                 else
                 {
-                    ldbx.Start();
-                    MongoDBConnection db = new MongoDBConnection();
+                        Freeze();
+                        MongoDBConnection db = new MongoDBConnection();
                     await db.DeleteRecord<SoldModel>(table, rentModel.Id);
                     await TransactionSubMenu.RefreshRentalContent();
-                    ldbx.Abort();
-                }
+                        UnFreeze();
+                    }
             }
             }
             catch (Exception _)

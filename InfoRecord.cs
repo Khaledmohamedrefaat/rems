@@ -22,10 +22,13 @@ namespace Real_Estate_Managment_Software___GUI
         bool inUpdate;
         public static Label unitsLabel, imgsLabel;
         public string table;
-        Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
+        public void Freeze()
         {
-            Application.Run(new LoadingBox());
+            tableLayoutPanel1.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            tableLayoutPanel1.Enabled = true;
         }
         public InfoRecord(Building building, string table)
         {
@@ -45,10 +48,10 @@ namespace Real_Estate_Managment_Software___GUI
             try
             {
                 this.CenterToParent();
-                ldbx.Start();
+                Freeze();
                 await LoadInfo();
-                ldbx.Abort();
-            
+                UnFreeze();
+
             }
             catch (Exception _)
             {
@@ -163,13 +166,14 @@ namespace Real_Estate_Managment_Software___GUI
 
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private async void button8_Click(object sender, EventArgs e)
         {
-            if (building.Apartments.Count + building.Storages.Count + building.Stores.Count == 0)
+            if (building.Model.Units.Count == 0)
             {
                 MessageBox.Show("This Unit Has No Nested Units");
                 return;
             }
+            //await building.LoadUnits(building.Model.Units);
             using (ApartInfo apartInfo = new ApartInfo(building))
                 apartInfo.ShowDialog();
         }
@@ -184,14 +188,14 @@ namespace Real_Estate_Managment_Software___GUI
             }
             MongoDBConnection db = new MongoDBConnection();
             List<string> images = new List<string>();
-            ldbx.Start();
-            foreach (int id in building.Model.ImagesIds)
+                Freeze();
+                foreach (int id in building.Model.ImagesIds)
             {
                 var ret = await db.LoadRecordById<ImageModel>("Images", id);
                 images.Add(ret.Content);
             }
-            ldbx.Abort();
-            using (viewPhoto x = new viewPhoto(images))
+                UnFreeze();
+                using (viewPhoto x = new viewPhoto(images))
                 x.ShowDialog();
             }
             catch (Exception _)
@@ -224,11 +228,11 @@ namespace Real_Estate_Managment_Software___GUI
                 updBuilding.Model.price = Convert.ToInt32(textBox4.Text);
                 updBuilding.Model.Address = textBox3.Text;
                 updBuilding.Model.Status = textBox5.Text;
-                ldbx.Start();
-                await Building.UpdateBuilding(updBuilding.Model, table);
+                    Freeze();
+                    await Building.UpdateBuilding(updBuilding.Model, table);
                 await LoadInfo();
-                ldbx.Abort();
-                MessageBox.Show("Updated Building Successfully");
+                    UnFreeze();
+                    MessageBox.Show("Updated Building Successfully");
             }
             }
             catch (Exception _)
@@ -265,10 +269,10 @@ namespace Real_Estate_Managment_Software___GUI
                         image.Save(m, image.RawFormat);
                         byte[] imageBytes = m.ToArray();
                         base64String = Convert.ToBase64String(imageBytes);
-                        ldbx.Start();
-                        var chk = await ImageModel.getAllModels(new ImageModel { Content = base64String });
-                        ldbx.Abort();
-                        if (chk.Count > 0)
+                            Freeze();
+                            var chk = await ImageModel.getAllModels(new ImageModel { Content = base64String });
+                            UnFreeze();
+                            if (chk.Count > 0)
                         {
                             if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
                             {
@@ -284,12 +288,12 @@ namespace Real_Estate_Managment_Software___GUI
                 ImageModel img = new ImageModel();
                 img.Content = base64String;
                 MongoDBConnection db = new MongoDBConnection();
-                ldbx.Start();
-                var nextId = await db.GetNextSeqVal("Images");
+                    Freeze();
+                    var nextId = await db.GetNextSeqVal("Images");
                 img.Id = nextId;
                 await db.InsertRecord<ImageModel>("Images", img);
-                ldbx.Abort();
-                updBuilding.Model.ImagesIds.Add(img.Id);
+                    UnFreeze();
+                    updBuilding.Model.ImagesIds.Add(img.Id);
                 if (imgsLabel.Text != "")
                     imgsLabel.Text += ", ";
                 imgsLabel.Text += nextId.ToString();
@@ -307,9 +311,9 @@ namespace Real_Estate_Managment_Software___GUI
             try { 
             using (SellRecord sellRecord = new SellRecord(building, "Building"))
                 sellRecord.ShowDialog();
-            ldbx.Start();
-            await LoadInfo();
-            ldbx.Abort();
+                Freeze();
+                await LoadInfo();
+                UnFreeze();
             }
             catch (Exception _)
             {
@@ -322,9 +326,9 @@ namespace Real_Estate_Managment_Software___GUI
             try { 
             using (RentRecord rentRecord = new RentRecord(building, "Buildings"))
                 rentRecord.ShowDialog();
-            ldbx.Start();
-            await LoadInfo();
-            ldbx.Abort();
+                Freeze();
+                await LoadInfo();
+                UnFreeze();
             }
             catch (Exception _)
             {
@@ -337,10 +341,10 @@ namespace Real_Estate_Managment_Software___GUI
             try { 
             MongoDBConnection db = new MongoDBConnection();
             if(this.building.Model.Status == "Sold"){
-                ldbx.Start();
-                SoldModel model = await db.LoadRecordById<SoldModel>("Sold", this.building.Model.orderID);
-                ldbx.Abort();
-                using (SellInfo sellInfo = new SellInfo(model, "Buildings"))
+                    Freeze();
+                    SoldModel model = await db.LoadRecordById<SoldModel>("Sold", this.building.Model.orderID);
+                    UnFreeze();
+                    using (SellInfo sellInfo = new SellInfo(model, "Buildings"))
                     sellInfo.ShowDialog();
             }
             }
@@ -352,7 +356,7 @@ namespace Real_Estate_Managment_Software___GUI
 
         private void button3_Click(object sender, EventArgs e)
         {
-            using (AddRecord addRecord = new AddRecord(false, "Update", new SIPair("", building.Model.Id), "Buildings"))
+            using (AddRecord addRecord = new AddRecord(false, "Update", new SIPair(table, building.Model.Id), table))
                 addRecord.ShowDialog();
         }
     }

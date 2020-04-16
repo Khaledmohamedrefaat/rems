@@ -34,7 +34,6 @@
             this.pnl_Title = new System.Windows.Forms.Panel();
             this.lbl_Logo = new System.Windows.Forms.Label();
             this.pnl_Navigation = new System.Windows.Forms.Panel();
-            this.pnl_DisplayForms = new System.Windows.Forms.Panel();
             this.btn_Transaction = new System.Windows.Forms.Button();
             this.btn_Villas = new System.Windows.Forms.Button();
             this.btn_AgriculturalLands = new System.Windows.Forms.Button();
@@ -44,6 +43,7 @@
             this.btn_Storages = new System.Windows.Forms.Button();
             this.btn_Apartments = new System.Windows.Forms.Button();
             this.btn_Buildings = new System.Windows.Forms.Button();
+            this.pnl_DisplayForms = new System.Windows.Forms.Panel();
             this.pnl_Header.SuspendLayout();
             this.pnl_Title.SuspendLayout();
             this.pnl_Navigation.SuspendLayout();
@@ -113,14 +113,6 @@
             this.pnl_Navigation.Name = "pnl_Navigation";
             this.pnl_Navigation.Size = new System.Drawing.Size(103, 613);
             this.pnl_Navigation.TabIndex = 3;
-            // 
-            // pnl_DisplayForms
-            // 
-            this.pnl_DisplayForms.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_DisplayForms.Location = new System.Drawing.Point(103, 68);
-            this.pnl_DisplayForms.Name = "pnl_DisplayForms";
-            this.pnl_DisplayForms.Size = new System.Drawing.Size(1161, 613);
-            this.pnl_DisplayForms.TabIndex = 4;
             // 
             // btn_Transaction
             // 
@@ -275,6 +267,14 @@
             this.btn_Buildings.UseVisualStyleBackColor = true;
             this.btn_Buildings.Click += new System.EventHandler(this.btn_Buildings_Click);
             // 
+            // pnl_DisplayForms
+            // 
+            this.pnl_DisplayForms.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_DisplayForms.Location = new System.Drawing.Point(103, 68);
+            this.pnl_DisplayForms.Name = "pnl_DisplayForms";
+            this.pnl_DisplayForms.Size = new System.Drawing.Size(1161, 613);
+            this.pnl_DisplayForms.TabIndex = 4;
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -286,6 +286,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainMenu";
             this.Text = "Real Estate Management Software";
+            this.Load += new System.EventHandler(this.MainMenu_Load);
             this.Resize += new System.EventHandler(this.MainMenu_Resize);
             this.pnl_Header.ResumeLayout(false);
             this.pnl_Title.ResumeLayout(false);

@@ -19,10 +19,13 @@ namespace Real_Estate_Managment_Software___GUI
         public static ApartmentListItem lst = new ApartmentListItem(new Apartment(), "");
         public static Panel controlPanel;
         public string table;
-        Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
+        public void Freeze()
         {
-            Application.Run(new LoadingBox());
+            pnl_MarginPanel.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            pnl_MarginPanel.Enabled = true;
         }
         public ApartmentSubMenu(string table)
         {
@@ -71,9 +74,9 @@ namespace Real_Estate_Managment_Software___GUI
                 searchModel.price = -1;
             searchModel.Address = tbx_Filter_Address.Text;
             searchModel.Status = tbx_Filter_Status.Text;
-            ldbx.Start();
-            await RefreshContent(table);
-            ldbx.Abort();
+                Freeze();
+                await RefreshContent(table);
+                UnFreeze();
             }
             catch (Exception _)
             {
@@ -88,6 +91,8 @@ namespace Real_Estate_Managment_Software___GUI
 
         public static async Task<string> RefreshContent(string table)
         {
+            if (searchModel == null)
+                return "Done";
             var retList = await Apartment.getAllModels(searchModel, table);
             controlPanel.Controls.Clear();
             foreach (ApartmentModel model in retList)
@@ -120,9 +125,9 @@ namespace Real_Estate_Managment_Software___GUI
             searchModel.price = -1;
             searchModel.Address = tbx_Filter_Address.Text;
             searchModel.Status = tbx_Filter_Status.Text;
-            ldbx.Start();
-            await RefreshContent(table);
-            ldbx.Abort();
+                Freeze();
+                await RefreshContent(table);
+                UnFreeze();
             }
             catch (Exception _)
             {

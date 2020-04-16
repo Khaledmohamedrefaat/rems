@@ -20,6 +20,15 @@ namespace Real_Estate_Managment_Software___GUI
         public static TransactionListItem lst = new TransactionListItem(new SoldModel(), new RentalModel(), "Sold");
         public static Panel controlPanel;
         public string table;
+        public static TableLayoutPanel pnl;
+        public static void Freeze()
+        {
+            pnl.Enabled = false;
+        }
+        public static void UnFreeze()
+        {
+            pnl.Enabled = true;
+        }
         public TransactionSubMenu(string table)
         {
             InitializeComponent();
@@ -29,6 +38,7 @@ namespace Real_Estate_Managment_Software___GUI
             comboBox1.SelectedIndex = 0;
             if (table == "Rentals")
                 lbl_Menu_Title.Text = "All " + table;
+            pnl = pnl_MarginPanel;
         }
         public static bool maximized;
         public bool CheckFilterInput()
@@ -39,18 +49,15 @@ namespace Real_Estate_Managment_Software___GUI
                 return false;
             return true;
         }
-        static Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
-        {
-            Application.Run(new LoadingBox());
-        }
         public static async Task<string> RefreshSoldContent()
         {
-            try { 
-            ldbx.Start();
+            try {
+                if (searchSoldModel == null)
+                    return "Done";
+                Freeze();
             var retList = await Sold.getAllModels(searchSoldModel);
-            ldbx.Abort();
-            controlPanel.Controls.Clear();
+                UnFreeze();
+                controlPanel.Controls.Clear();
             foreach (SoldModel model in retList)
             {
                 Sold b = new Sold(model);
@@ -73,6 +80,8 @@ namespace Real_Estate_Managment_Software___GUI
         }
         public static async Task<string> RefreshRentalContent()
         {
+            if (searchrentModel == null)
+                return "Done";
             var retList = await Rental.getAllModels(searchrentModel);
             controlPanel.Controls.Clear();
             foreach (RentalModel model in retList)
@@ -91,8 +100,10 @@ namespace Real_Estate_Managment_Software___GUI
         }
         private async void btn_Filter_Click(object sender, EventArgs e)
         {
-            try { 
-            if (!CheckFilterInput())
+            try {
+                if (controlPanel == null)
+                    return;
+                if (!CheckFilterInput())
                 return;
             if (table == "Sold")
             {
@@ -100,20 +111,20 @@ namespace Real_Estate_Managment_Software___GUI
                 searchSoldModel.Name = tbx_Filter_ID.Text;
                 if(tbx_Filter_Address.Text != "")
                     searchSoldModel.AssetId = new SIPair(comboBox1.SelectedItem.ToString(), Convert.ToInt32(tbx_Filter_Address.Text));
-                ldbx.Start();
-                await RefreshSoldContent();
-                ldbx.Abort();
-            }
+                    Freeze(); 
+                    await RefreshSoldContent();
+                    UnFreeze();
+                }
             else
             {
                 searchrentModel = new RentalModel();
                 searchrentModel.Name = tbx_Filter_ID.Text;
                 if (tbx_Filter_Address.Text != "")
                     searchrentModel.AssetId = new SIPair(comboBox1.SelectedItem.ToString(), Convert.ToInt32(tbx_Filter_Address.Text));
-                ldbx.Start();
-                await RefreshRentalContent();
-                ldbx.Abort();
-            }
+                    Freeze();
+                    await RefreshRentalContent();
+                    UnFreeze();
+                }
             }
             catch (Exception _)
             {
@@ -128,18 +139,18 @@ namespace Real_Estate_Managment_Software___GUI
             {
                 searchSoldModel = new SoldModel();
                 searchSoldModel.Name = tbx_Filter_ID.Text;
-                ldbx.Start();
-                await RefreshSoldContent();
-                ldbx.Abort();
-            }
+                    Freeze();
+                    await RefreshSoldContent();
+                    UnFreeze();
+                }
             else
             {
                 searchrentModel = new RentalModel();
                 searchrentModel.Name = tbx_Filter_ID.Text;
-                ldbx.Start();
-                await RefreshRentalContent();
-                ldbx.Abort();
-            }
+                    Freeze();
+                    await RefreshRentalContent();
+                    UnFreeze();
+                }
             }
             catch (Exception _)
             {

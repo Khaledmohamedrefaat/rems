@@ -17,16 +17,12 @@ namespace Real_Estate_Managment_Software___GUI
         public MainMenu()
         {
             InitializeComponent();
+            /*
             MainSubMenu a = new MainSubMenu("TEST");
             ApartmentSubMenu b = new ApartmentSubMenu("TEST");
             TransactionSubMenu c = new TransactionSubMenu("TEST");
-            /*
-             * Creating Sequence
-            MongoDBConnection db = new MongoDBConnection();
-            Seq toAdd = new Seq { display_id = 1 };
-            db.InsertRecord("Sequences", toAdd);
             */
-            
+
         }
         //Fields
         private Button currentButton;
@@ -35,8 +31,8 @@ namespace Real_Estate_Managment_Software___GUI
         private Form activeForm;
         private static Panel controlPanel = new Panel();
         string activeFormName;
-        private void OpenChildForm(Form childForm, object btnSender){
-            if (activeFormName == "Buildings")
+        private void OpenChildForm(Form childForm, object btnSender) {
+            if (activeFormName == "Buildings" || activeFormName == "Villas" || activeFormName == "Lands" || activeFormName == "Factories")
                 MainSubMenu.lst = new ListItem(new FunctionalClasses.Building(), "");
             else if (activeFormName == "Apartments" || activeFormName == "Storages" || activeFormName == "Stores")
                 ApartmentSubMenu.lst = new ApartmentListItem(new FunctionalClasses.Apartment(), "");
@@ -69,10 +65,10 @@ namespace Real_Estate_Managment_Software___GUI
         {
             Application.Run(new LoadingBox());
         }
-        private async void MainMenu_Resize(object sender, EventArgs e)
-        {
+        private async void MainMenu_Resize(object sender, EventArgs e){
+            
             try { 
-            ldbx.Start();
+            
             if(currentButton == btn_Buildings){
                 MainSubMenu.maximized = this.WindowState == FormWindowState.Maximized;
                 await MainSubMenu.RefreshContent(activeFormName);
@@ -81,21 +77,23 @@ namespace Real_Estate_Managment_Software___GUI
                 ApartmentSubMenu.maximized = this.WindowState == FormWindowState.Maximized;
                 await ApartmentSubMenu.RefreshContent(activeFormName);
             }
-            else if(currentButton == btn_Lands ){
+            else if(currentButton == btn_Lands){
                 TransactionSubMenu.maximized = this.WindowState == FormWindowState.Maximized;
                 await TransactionSubMenu.RefreshSoldContent();
             }
             else if(currentButton == btn_Factories)
             {
                 TransactionSubMenu.maximized = this.WindowState == FormWindowState.Maximized;
-                await TransactionSubMenu.RefreshSoldContent();
+                await TransactionSubMenu.RefreshRentalContent();
             }
-            ldbx.Abort();
+            
             }
             catch (Exception _)
             {
                 MessageBox.Show("Cannot Reach The Database. Check Your Internet Connection.");
             }
+            
+            
         }
 
         private void btn_Apartments_Click(object sender, EventArgs e)
@@ -193,6 +191,11 @@ namespace Real_Estate_Managment_Software___GUI
             currentButton = senderBtn;
             OpenChildForm(new MainSubMenu("Factories"), sender);
             activeFormName = "Factories";
+        }
+
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+            
         }
     }
 }

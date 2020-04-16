@@ -28,7 +28,14 @@ namespace Real_Estate_Managment_Software___GUI
             this.from = from;
             LoadInfo();
         }
-
+        public void Freeze()
+        {
+            tableLayoutPanel1.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            tableLayoutPanel1.Enabled = true;
+        }
         public void LoadInfo(){
             lbl_Desposit.Text = tbx_Insurance.Text = model.InsallDeposit.ToString();
             lbl_Duration.Text = tbx_Duration.Text = model.Duration.ToString();
@@ -44,11 +51,6 @@ namespace Real_Estate_Managment_Software___GUI
             int diff = ((dateTimePicker2.Value.Year - dateTimePicker1.Value.Year) * 12) + dateTimePicker2.Value.Month - dateTimePicker1.Value.Month;
             tbx_Duration.Text = diff.ToString();
         }
-        Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
-        {
-            Application.Run(new LoadingBox());
-        }
         private async void button12_Click(object sender, EventArgs e)
         {
             try { 
@@ -58,10 +60,10 @@ namespace Real_Estate_Managment_Software___GUI
             updModel = model;
             updModel.AmountCollected += Convert.ToInt32(input);
             MongoDBConnection db = new MongoDBConnection();
-            ldbx.Start();
+                Freeze();
             await db.UpdateRecord("Sold", updModel.Id, updModel);
-            ldbx.Abort();
-            model = updModel;
+                UnFreeze();
+                model = updModel;
             LoadInfo();
             MessageBox.Show("Updated Successfully");
             }
@@ -122,10 +124,10 @@ namespace Real_Estate_Managment_Software___GUI
                 updModel.Duration = ((dateTimePicker2.Value.Year - dateTimePicker1.Value.Year) * 12) + dateTimePicker2.Value.Month - dateTimePicker1.Value.Month;
                 updModel.Notes = richTextBox1.Text;
                 MongoDBConnection db = new MongoDBConnection();
-                ldbx.Start();
-                await db.UpdateRecord("Sold", updModel.Id, updModel);
-                ldbx.Abort();
-                model = updModel;
+                    Freeze();
+                    await db.UpdateRecord("Sold", updModel.Id, updModel);
+                    UnFreeze();
+                    model = updModel;
                 LoadInfo();
                 MessageBox.Show("Updated Successfully");
             }

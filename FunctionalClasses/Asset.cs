@@ -88,6 +88,9 @@ namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
 
         public async Task<string> LoadUnits(List<SIPair> unitList)
         {
+            Apartments.Clear();
+            Storages.Clear();
+            Stores.Clear();
             foreach (SIPair unit in unitList)
             {
                 await LoadAssetById(unit);

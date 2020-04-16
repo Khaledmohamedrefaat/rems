@@ -22,6 +22,14 @@ namespace Real_Estate_Managment_Software___GUI
             this.ImagesBase64 = ImagesBase64;
             index = 0;
         }
+        public void Freeze()
+        {
+            tableLayoutPanel1.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            tableLayoutPanel1.Enabled = true;
+        }
         private void DisplayImage()
         {
             if (index == 0)

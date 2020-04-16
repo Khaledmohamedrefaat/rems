@@ -19,6 +19,14 @@ namespace Real_Estate_Managment_Software___GUI
         public static RentalModel updModel;
         bool isUpdate;
         public string from;
+        public void Freeze()
+        {
+            tableLayoutPanel1.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            tableLayoutPanel1.Enabled = true;
+        }
         public RentInfo(RentalModel model, string from)
         {
             InitializeComponent();
@@ -61,11 +69,7 @@ namespace Real_Estate_Managment_Software___GUI
                 return false;
             return true;
         }
-        Thread ldbx = new Thread(new ThreadStart(Loading));
-        public static void Loading()
-        {
-            Application.Run(new LoadingBox());
-        }
+
         private async void button9_Click(object sender, EventArgs e)
         {
             try { 
@@ -97,10 +101,10 @@ namespace Real_Estate_Managment_Software___GUI
                 updModel.Duration = Convert.ToInt32(diff);
                 updModel.Notes = richTextBox1.Text;
                 MongoDBConnection db = new MongoDBConnection();
-                ldbx.Start();
+                    Freeze();
                 await db.UpdateRecord("Rentals", updModel.Id, updModel);
-                ldbx.Abort();
-                model = updModel;
+                    UnFreeze();
+                    model = updModel;
                 LoadInfo();
                 MessageBox.Show("Updated Successfully");
             }
@@ -140,10 +144,10 @@ namespace Real_Estate_Managment_Software___GUI
             updModel = model;
             updModel.AmountCollected += Convert.ToInt32(input);
             MongoDBConnection db = new MongoDBConnection();
-            ldbx.Start();
-            await db.UpdateRecord("Rentals", updModel.Id, updModel);
-            ldbx.Abort();
-            model = updModel;
+                Freeze();
+                await db.UpdateRecord("Rentals", updModel.Id, updModel);
+                UnFreeze(); 
+                model = updModel;
             LoadInfo();
             MessageBox.Show("Updated Successfully");
             }

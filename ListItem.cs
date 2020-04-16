@@ -23,6 +23,14 @@ namespace Real_Estate_Managment_Software___GUI
             this.building = building;
             this.table = table;
         }
+        public void Freeze()
+        {
+            pnl_Main.Enabled = false;
+        }
+        public void UnFreeze()
+        {
+            pnl_Main.Enabled = true;
+        }
         public void LoadLabels(){
             label3.Text = building.Model.Id.ToString();
             label4.Text = building.Model.Units.Count.ToString();
@@ -90,8 +98,10 @@ namespace Real_Estate_Managment_Software___GUI
             if ((MessageBox.Show("Are You Sure You Want To Delete The Unit ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
             {
                 MongoDBConnection db = new MongoDBConnection();
+                Freeze();
                 await Asset.Delete(building, table, building.Model.Id);
                 await MainSubMenu.RefreshContent(table);
+                UnFreeze(); 
             }
         }
 
