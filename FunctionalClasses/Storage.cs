@@ -1,11 +1,12 @@
-﻿using Real_Estate_Management_Software.DatabaseModels;
+﻿using MongoDB.Driver;
+using Real_Estate_Managment_Software___GUI.DatabaseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Real_Estate_Management_Software.FunctionalClasses
+namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
 {
     public class Storage : Asset
     {
@@ -19,12 +20,19 @@ namespace Real_Estate_Management_Software.FunctionalClasses
             this.Model = model;
         }
 
-        public void readFromUser()
+        public static async Task<List<StorageModel>> getAllModels(StorageModel record)
         {
-            Console.Write("Enter the Area :"); this.Model.Area = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Enter the Address :"); this.Model.Address = Console.ReadLine();
-            this.Model.Status = "Available";
-            this.Model.orderID = -1;
+            MongoDBConnection db = new MongoDBConnection();
+            var collection = db.db.GetCollection<StorageModel>("Storages");
+            var filter = Builders<StorageModel>.Filter.Empty;
+            if (record.Id != -1) filter &= Builders<StorageModel>.Filter.Eq("Id", record.Id);
+            if (record.Area != -1) filter &= Builders<StorageModel>.Filter.Eq("Area", record.Area);
+            if (record.Address != "") filter &= Builders<StorageModel>.Filter.Eq("Address", record.Address);
+            if (record.Status != "") filter &= Builders<StorageModel>.Filter.Eq("Status", record.Status);
+            if (record.price != -1) filter &= Builders<StorageModel>.Filter.Eq("price", record.price);
+            var ret = await collection.FindAsync<StorageModel>(filter);
+            return ret.ToList();
         }
+
     }
 }

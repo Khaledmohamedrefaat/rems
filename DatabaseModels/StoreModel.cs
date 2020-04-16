@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Real_Estate_Management_Software.DatabaseModels
+namespace Real_Estate_Managment_Software___GUI.DatabaseModels
 {
     public class StoreModel : AssetModel
     {

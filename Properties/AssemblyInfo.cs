@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Real Estate Management Software")]
+[assembly: AssemblyTitle("Real Estate Managment Software - GUI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Real Estate Management Software")]
+[assembly: AssemblyProduct("Real Estate Managment Software - GUI")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3f341300-866a-40ef-9bc4-192f8aec9522")]
+[assembly: Guid("55679be7-ea98-4b11-9394-dfb137de8635")]
 
 // Version information for an assembly consists of the following four values:
 //

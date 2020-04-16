@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Real_Estate_Management_Software.ConnectionClasses
+namespace Real_Estate_Managment_Software___GUI.DatabaseModels
 {
     public class Seq
     {
@@ -43,10 +43,15 @@ namespace Real_Estate_Management_Software.ConnectionClasses
             var collection = db.GetCollection<T>(table);
             var filter = Builders<T>.Filter.Eq("Id", id);
             var result = await collection.FindAsync(filter);
-
             return result.First();
         }
 
+        public async Task<string> UpdateRecord<T>(string table, int id, T record)
+        {
+            await DeleteRecord<T>(table, id);
+            await InsertRecord<T>(table, record);
+            return "Updated Successfully";
+        }
 
         public async Task<string> UpdateRecord<T>(string table, int id, T _, string field, string value)
         {

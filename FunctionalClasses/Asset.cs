@@ -1,24 +1,26 @@
-﻿using Real_Estate_Management_Software.ConnectionClasses;
-using Real_Estate_Management_Software.DatabaseModels;
+﻿using Real_Estate_Managment_Software___GUI.DatabaseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Real_Estate_Management_Software.FunctionalClasses
+namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
 {
-    public abstract class Asset{
+    public abstract class Asset
+    {
         public List<Apartment> Apartments;
         public List<Storage> Storages;
         public List<Store> Stores;
 
-        public Asset(){
+        public Asset()
+        {
             Apartments = new List<Apartment>();
             Storages = new List<Storage>();
             Stores = new List<Store>();
         }
-        public async Task<string> LoadAssetById(SIPair unit){
+        public async Task<string> LoadAssetById(SIPair unit)
+        {
             string table = unit.Typ;
             int id = unit.Id;
             if (table == "Buildings")
@@ -84,7 +86,8 @@ namespace Real_Estate_Management_Software.FunctionalClasses
                 return "Failed To Load Asset";
         }
 
-        public async Task<string> LoadUnits(List<SIPair> unitList){
+        public async Task<string> LoadUnits(List<SIPair> unitList)
+        {
             foreach (SIPair unit in unitList)
             {
                 await LoadAssetById(unit);
@@ -92,10 +95,12 @@ namespace Real_Estate_Management_Software.FunctionalClasses
             return "Done";
         }
 
-        public static async Task<string> Sell<T>(Sold sellOrder, T assetObj, string table, int Id){
+        public static async Task<string> Sell<T>(Sold sellOrder, T assetObj, string table, int Id)
+        {
             MongoDBConnection db = new MongoDBConnection();
             await db.InsertRecord<SoldModel>("Sold", sellOrder.Model);
             await db.UpdateRecord<T>(table, Id, assetObj, "Status", "Sold");
+            await db.UpdateRecord<T>(table, Id, assetObj, "orderID", sellOrder.Model.Id);
             return "Done";
         }
 
@@ -104,6 +109,7 @@ namespace Real_Estate_Management_Software.FunctionalClasses
             MongoDBConnection db = new MongoDBConnection();
             await db.InsertRecord<RentalModel>("Rentals", rentOrder.Model);
             await db.UpdateRecord<T>(table, Id, assetObj, "Status", "Rented");
+            await db.UpdateRecord<T>(table, Id, assetObj, "orderID", rentOrder.Model.Id);
             return "Done";
         }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Real_Estate_Management_Software
+namespace Real_Estate_Managment_Software___GUI
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace Real_Estate_Management_Software
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new MainMenu());
         }
     }
 }

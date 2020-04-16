@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{55679BE7-EA98-4B11-9394-DFB137DE8635}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Real_Estate_Managment_Software___GUI</RootNamespace>
+    <AssemblyName>Real Estate Managment Software - GUI</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Streamlineicons-Streamline-Ux-Free-Real-estate-house.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>D0FB79E04A634070DE7B2A414EDAFA5E77F197F5</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Real Estate Managment Software - GUI_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Crc32C.NET, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Crc32C.NET.1.0.5.0\lib\net20\Crc32C.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="DnsClient, Version=1.3.1.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
+      <HintPath>packages\DnsClient.1.3.1\lib\net471\DnsClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="MongoDB.Bson, Version=2.10.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MongoDB.Bson.2.10.3\lib\net452\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.10.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MongoDB.Driver.2.10.3\lib\net452\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.10.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MongoDB.Driver.Core.2.10.3\lib\net452\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Libmongocrypt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MongoDB.Libmongocrypt.1.0.0\lib\net452\MongoDB.Libmongocrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpCompress, Version=0.23.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>packages\SharpCompress.0.23.0\lib\net45\SharpCompress.dll</HintPath>
+    </Reference>
+    <Reference Include="Snappy.NET, Version=1.1.1.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Snappy.NET.1.1.1.8\lib\net45\Snappy.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddRecord.Designer.cs">
+      <DependentUpon>AddRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApartInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApartInfo.Designer.cs">
+      <DependentUpon>ApartInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApartmentListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ApartmentListItem.Designer.cs">
+      <DependentUpon>ApartmentListItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApartmentSubMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApartmentSubMenu.Designer.cs">
+      <DependentUpon>ApartmentSubMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FunctionalClasses\Validator.cs" />
+    <Compile Include="InfoRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InfoRecord.Designer.cs">
+      <DependentUpon>InfoRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectionClasses\MongoDBConnection.cs" />
+    <Compile Include="DatabaseModels\AgriculturalLandModel.cs" />
+    <Compile Include="DatabaseModels\ApartmentModel.cs" />
+    <Compile Include="DatabaseModels\AssetModel.cs" />
+    <Compile Include="DatabaseModels\BuildingModel.cs" />
+    <Compile Include="DatabaseModels\FactoryModel.cs" />
+    <Compile Include="DatabaseModels\ImageModel.cs" />
+    <Compile Include="DatabaseModels\LandModel.cs" />
+    <Compile Include="DatabaseModels\RentalModel.cs" />
+    <Compile Include="DatabaseModels\SoldModel.cs" />
+    <Compile Include="DatabaseModels\StorageModel.cs" />
+    <Compile Include="DatabaseModels\StoreModel.cs" />
+    <Compile Include="DatabaseModels\TransactionModel.cs" />
+    <Compile Include="DatabaseModels\VillaModel.cs" />
+    <Compile Include="FunctionalClasses\AgriculturalLand.cs" />
+    <Compile Include="FunctionalClasses\Apartment.cs" />
+    <Compile Include="FunctionalClasses\Asset.cs" />
+    <Compile Include="FunctionalClasses\Building.cs" />
+    <Compile Include="FunctionalClasses\Factory.cs" />
+    <Compile Include="FunctionalClasses\Land.cs" />
+    <Compile Include="FunctionalClasses\Rental.cs" />
+    <Compile Include="FunctionalClasses\Sold.cs" />
+    <Compile Include="FunctionalClasses\Storage.cs" />
+    <Compile Include="FunctionalClasses\Store.cs" />
+    <Compile Include="FunctionalClasses\Transaction.cs" />
+    <Compile Include="FunctionalClasses\Villa.cs" />
+    <Compile Include="InputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputForm.Designer.cs">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ListItem.Designer.cs">
+      <DependentUpon>ListItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadingBox.Designer.cs">
+      <DependentUpon>LoadingBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainMenu.Designer.cs">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainSubMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainSubMenu.Designer.cs">
+      <DependentUpon>MainSubMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RentInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RentInfo.Designer.cs">
+      <DependentUpon>RentInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RentRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RentRecord.Designer.cs">
+      <DependentUpon>RentRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SellInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SellInfo.Designer.cs">
+      <DependentUpon>SellInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SellRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SellRecord.Designer.cs">
+      <DependentUpon>SellRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TransactionListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TransactionListItem.Designer.cs">
+      <DependentUpon>TransactionListItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TransactionSubMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransactionSubMenu.Designer.cs">
+      <DependentUpon>TransactionSubMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="viewPhoto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="viewPhoto.Designer.cs">
+      <DependentUpon>viewPhoto.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="AddRecord.resx">
+      <DependentUpon>AddRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApartInfo.resx">
+      <DependentUpon>ApartInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApartmentListItem.resx">
+      <DependentUpon>ApartmentListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApartmentSubMenu.resx">
+      <DependentUpon>ApartmentSubMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InfoRecord.resx">
+      <DependentUpon>InfoRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputForm.resx">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListItem.resx">
+      <DependentUpon>ListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadingBox.resx">
+      <DependentUpon>LoadingBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainMenu.resx">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainSubMenu.resx">
+      <DependentUpon>MainSubMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="RentInfo.resx">
+      <DependentUpon>RentInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RentRecord.resx">
+      <DependentUpon>RentRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SellInfo.resx">
+      <DependentUpon>SellInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SellRecord.resx">
+      <DependentUpon>SellRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransactionListItem.resx">
+      <DependentUpon>TransactionListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransactionSubMenu.resx">
+      <DependentUpon>TransactionSubMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="viewPhoto.resx">
+      <DependentUpon>viewPhoto.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Real Estate Managment Software - GUI_TemporaryKey.pfx" />
+    <None Include="Resources\business-and-finance.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Untitled-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Case White.png" />
+    <None Include="Resources\AddBtn.png" />
+    <None Include="Resources\ApartmentsBtn.png" />
+    <None Include="Resources\BuildingBtn.png" />
+    <None Include="Resources\DeleteIcon.png" />
+    <None Include="Resources\Factories.png" />
+    <None Include="Resources\Filter.png" />
+    <None Include="Resources\RentalsBtn.png" />
+    <None Include="Resources\Sold.png" />
+    <None Include="Resources\StorageBtn.png" />
+    <None Include="Resources\StoreBtn.png" />
+    <None Include="Resources\View.png" />
+    <None Include="Resources\Villas.png" />
+    <None Include="Resources\StoreBtnBgd.png" />
+    <None Include="Resources\UpdateBtn.png" />
+    <None Include="Resources\UpdateBtnBlack.png" />
+    <None Include="Resources\Upd2.png" />
+    <None Include="Resources\ViewB.png" />
+    <None Include="Resources\ViewBS.png" />
+    <None Include="Resources\ViewBSF.png" />
+    <None Include="Resources\ViewXSB.png" />
+    <None Include="Resources\RentalsBtn1.png" />
+    <None Include="Resources\ViewXSW.png" />
+    <None Include="Resources\RentalsBtnXSW.png" />
+    <None Include="Resources\SoldXSW.png" />
+    <None Include="Resources\ViewXSW1.png" />
+    <None Include="Resources\RentalsBtnXSB.png" />
+    <None Include="Resources\SoldXSB.png" />
+    <None Include="Resources\AddBtnXSW.png" />
+    <None Include="Resources\AddBtnGreen.png" />
+    <None Include="Resources\DeleteIconRed.png" />
+    <None Include="Resources\FilterXSB.png" />
+    <None Include="Resources\FilterColored.png" />
+    <None Include="Resources\FilterSB.png" />
+    <None Include="Resources\Back.png" />
+    <None Include="Resources\Next.png" />
+    <None Include="Resources\Loading.png" />
+    <Content Include="Streamlineicons-Streamline-Ux-Free-Real-estate-house.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\MongoDB.Libmongocrypt.1.0.0\build\MongoDB.Libmongocrypt.targets" Condition="Exists('packages\MongoDB.Libmongocrypt.1.0.0\build\MongoDB.Libmongocrypt.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\MongoDB.Libmongocrypt.1.0.0\build\MongoDB.Libmongocrypt.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MongoDB.Libmongocrypt.1.0.0\build\MongoDB.Libmongocrypt.targets'))" />
+  </Target>
+</Project>

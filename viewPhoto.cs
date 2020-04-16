@@ -9,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Real_Estate_Management_Software
+namespace Real_Estate_Managment_Software___GUI
 {
+    
     public partial class viewPhoto : Form
     {
         List<string> ImagesBase64 = new List<string>();
@@ -19,37 +20,18 @@ namespace Real_Estate_Management_Software
         {
             InitializeComponent();
             this.ImagesBase64 = ImagesBase64;
-        }
-
-        private void viewPhoto_Load(object sender, EventArgs e)
-        {
             index = 0;
-            DisplayImage();
-            button9.Visible = false;
-            if (ImagesBase64.Count == 1)
-                button1.Visible = false;
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void DisplayImage()
         {
-            index++;
-            DisplayImage();
-            if (index == ImagesBase64.Count - 1)
-                button1.Visible = false;
-            if (index > 0)
-                button9.Visible = true;
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            index--;
-            DisplayImage();
             if (index == 0)
-                button9.Visible = false;
-            if (index < ImagesBase64.Count - 1)
-                button1.Visible = true;
-        }
-        private void DisplayImage(){
+                btn_prv.Visible = false;
+            else
+                btn_prv.Visible = true;
+            if (index == ImagesBase64.Count - 1)
+                btn_next.Visible = false;
+            else
+                btn_next.Visible = true;
             byte[] bytes = Convert.FromBase64String(ImagesBase64[index]);
 
             Image imagetmp;
@@ -60,5 +42,23 @@ namespace Real_Estate_Management_Software
             pictureBox1.Image = imagetmp;
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
         }
+
+        private void btn_prv_Click(object sender, EventArgs e)
+        {
+            index--;
+            DisplayImage();
+        }
+
+        private void btn_next_Click(object sender, EventArgs e)
+        {
+            index++;
+            DisplayImage();
+        }
+
+        private void viewPhoto_Load(object sender, EventArgs e)
+        {
+            DisplayImage();
+        }
     }
+    
 }

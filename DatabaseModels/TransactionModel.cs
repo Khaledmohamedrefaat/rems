@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Real_Estate_Management_Software.DatabaseModels
+namespace Real_Estate_Managment_Software___GUI.DatabaseModels
 {
     public abstract class TransactionModel
     {
@@ -17,6 +17,11 @@ namespace Real_Estate_Management_Software.DatabaseModels
         public SIPair AssetId { get; set; }
         public int AmountCollected { get; set; }
         public string NationalID { get; set; }
+
+        public string Name { get; set; }
+
+        public int Duration { get; set; }
+        public string Notes { get; set; }
 
         public TransactionModel()
         {
