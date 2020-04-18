@@ -34,7 +34,13 @@ namespace Real_Estate_Managment_Software___GUI
         public void LoadLabels(){
             label3.Text = building.Model.Id.ToString();
             label4.Text = building.Model.Units.Count.ToString();
-            label5.Text = building.Model.Address.ToString();
+            string full_address = "";
+            full_address += building.Model.City;
+            full_address += " - ";
+            full_address += building.Model.Governorate;
+            full_address += " - ";
+            full_address += building.Model.Street;
+            label5.Text = full_address;
         }
 
         public void Fix(){

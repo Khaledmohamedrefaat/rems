@@ -26,7 +26,7 @@ namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
             MongoDBConnection db = new MongoDBConnection();
             var collection = db.db.GetCollection<BuildingModel>(table);
             var filter = Builders<BuildingModel>.Filter.Eq("Id", record.Id);
-            var update = Builders<BuildingModel>.Update.Set("Area", record.Area).Set("Status", record.Status).Set("Address", record.Address).Set("orderID", record.orderID).Set("price", record.price).Set("Units", record.Units).Set("ImagesIds", record.ImagesIds);
+            var update = Builders<BuildingModel>.Update.Set("Area", record.Area).Set("Status", record.Status).Set("City", record.City).Set("Governorate", record.Governorate).Set("Street", record.Street).Set("orderID", record.orderID).Set("price", record.price).Set("Units", record.Units).Set("ImagesIds", record.ImagesIds);
             await collection.UpdateOneAsync(filter, update);
             return "Done";
         }
@@ -36,9 +36,11 @@ namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
             MongoDBConnection db = new MongoDBConnection();
             var collection = db.db.GetCollection<BuildingModel>(table);
             var filter = Builders<BuildingModel>.Filter.Empty;
-            if (record.Id != -1) filter &= Builders<BuildingModel>.Filter.Eq("Id", record.Id);
+            if (record.Id != "") filter &= Builders<BuildingModel>.Filter.Eq("Id", record.Id);
             if (record.Area != -1) filter &= Builders<BuildingModel>.Filter.Eq("Area", record.Area);
-            if (record.Address != "") filter &= Builders<BuildingModel>.Filter.Eq("Address", record.Address);
+            if (record.City != "") filter &= Builders<BuildingModel>.Filter.Eq("City", record.City);
+            if (record.Governorate != "") filter &= Builders<BuildingModel>.Filter.Eq("Governorate", record.Governorate);
+            if (record.Street != "") filter &= Builders<BuildingModel>.Filter.Eq("Address", record.Street);
             if (record.Status != "") filter &= Builders<BuildingModel>.Filter.Eq("Status", record.Status);
             if (record.price != -1) filter &= Builders<BuildingModel>.Filter.Eq("price", record.price);
             var ret = await collection.FindAsync<BuildingModel>(filter);

@@ -38,6 +38,8 @@ namespace Real_Estate_Managment_Software___GUI
             cnt = building.Apartments.Count + building.Storages.Count + building.Stores.Count;
             index = 0;
             inUpdate = false;
+            textBox6.Visible = textBox7.Visible = textBox3.Visible = false;
+            lbl_Address.Visible = label15.Visible = label17.Visible = true;
             textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = button2.Visible = false;
             lbl_Address.Visible = lbl_ID.Visible = lbl_Area.Visible = lbl_Price.Visible = lbl_Status.Visible = true;
             button12.Visible = button13.Visible = button1.Visible = true;
@@ -200,7 +202,9 @@ namespace Real_Estate_Managment_Software___GUI
             if (inUpdate == false)
             {
                 inUpdate = true;
-                button12.Visible = button13.Visible = true;
+                    textBox6.Visible = textBox7.Visible = textBox3.Visible = true;
+                    lbl_Address.Visible = label15.Visible = label17.Visible = false;
+                    button12.Visible = button13.Visible = true;
                 textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = button2.Visible = true;
                 lbl_Address.Visible = lbl_ID.Visible = lbl_Area.Visible = lbl_Price.Visible = lbl_Status.Visible = false;
                 button12.Visible = button13.Visible = button1.Visible = false;
@@ -219,14 +223,18 @@ namespace Real_Estate_Managment_Software___GUI
                 if (!CheckFilterInput())
                     return;
                 inUpdate = false;
-                button12.Visible = button13.Visible = false;
-                textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = button2.Visible = false;
-                lbl_Address.Visible = lbl_ID.Visible = lbl_Area.Visible = lbl_Price.Visible = lbl_Status.Visible = true;
+                    textBox6.Visible = textBox7.Visible = textBox3.Visible = false;
+                    lbl_Address.Visible = label15.Visible = label17.Visible = true;
+                    button12.Visible = button13.Visible = false;
+                textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = button2.Visible =  false;
+                lbl_Address.Visible = lbl_ID.Visible = lbl_Area.Visible = lbl_Price.Visible = lbl_Status.Visible =  true;
                 button12.Visible = button13.Visible = button1.Visible = true;
-                updModel.Id = Convert.ToInt32(textBox1.Text);
+                updModel.Id = textBox1.Text;
                 updModel.Area = Convert.ToInt32(textBox2.Text);
                 updModel.price = Convert.ToInt32(textBox4.Text);
-                updModel.Address = textBox3.Text;
+                updModel.City = textBox3.Text;
+                updModel.Governorate = textBox6.Text;
+                updModel.Street = textBox7.Text;
                 updModel.Status = textBox5.Text;
                 updModel.assetID = currAssetId;
                 updModel.orderID = Convert.ToInt32(label6.Text);
@@ -328,7 +336,10 @@ namespace Real_Estate_Managment_Software___GUI
                 label2.Text = "Apartment";
                 lbl_ID.Text = textBox1.Text = model.Id.ToString();
                 lbl_Area.Text = textBox2.Text = model.Area.ToString();
-                lbl_Address.Text = textBox3.Text = model.Address;
+                lbl_Address.Text = textBox3.Text = model.City;
+                label15.Text = textBox6.Text = model.Governorate;
+                label17.Text = textBox7.Text = model.Street;
+
                 lbl_Price.Text = textBox4.Text = model.price.ToString();
                 lbl_Status.Text = textBox5.Text = model.Status;
                 imagesIds = model.ImagesIds;
@@ -355,7 +366,9 @@ namespace Real_Estate_Managment_Software___GUI
                 label2.Text = "Storage";
                 lbl_ID.Text = textBox1.Text = model.Id.ToString();
                 lbl_Area.Text = textBox2.Text = model.Area.ToString();
-                lbl_Address.Text = textBox3.Text = model.Address;
+                lbl_Address.Text = textBox3.Text = model.City;
+                label15.Text = textBox6.Text = model.Governorate;
+                label17.Text = textBox7.Text = model.Street;
                 lbl_Price.Text = textBox4.Text = model.price.ToString();
                 lbl_Status.Text = textBox5.Text = model.Status;
                 imagesIds = model.ImagesIds;
@@ -382,7 +395,9 @@ namespace Real_Estate_Managment_Software___GUI
                 label2.Text = "Store";
                 lbl_ID.Text = textBox1.Text = model.Id.ToString();
                 lbl_Area.Text = textBox2.Text = model.Area.ToString();
-                lbl_Address.Text = textBox3.Text = model.Address;
+                lbl_Address.Text = textBox3.Text = model.City;
+                label15.Text = textBox6.Text = model.Governorate;
+                label17.Text = textBox7.Text = model.Street;
                 lbl_Price.Text = textBox4.Text = model.price.ToString();
                 lbl_Status.Text = textBox5.Text = model.Status;
                 imagesIds = model.ImagesIds;

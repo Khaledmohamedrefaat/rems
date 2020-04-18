@@ -15,6 +15,13 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
         public Guid _id { get; set; }
         public int display_id { get; set; }
     }
+    public class CodeElement
+    {
+        [BsonId]
+        public Guid _id { get; set; }
+        public string code { get; set; }
+        public int nextVal { get; set; }
+    }
     public class MongoDBConnection
     {
         public IMongoDatabase db;
@@ -38,6 +45,14 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
             return result.ToList();
         }
 
+        public async Task<T> LoadRecordById<T>(string table, string id)
+        {
+            var collection = db.GetCollection<T>(table);
+            var filter = Builders<T>.Filter.Eq("Id", id);
+            var result = await collection.FindAsync(filter);
+            return result.First();
+        }
+
         public async Task<T> LoadRecordById<T>(string table, int id)
         {
             var collection = db.GetCollection<T>(table);
@@ -46,6 +61,12 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
             return result.First();
         }
 
+        public async Task<string> UpdateRecord<T>(string table, string id, T record)
+        {
+            await DeleteRecord<T>(table, id);
+            await InsertRecord<T>(table, record);
+            return "Updated Successfully";
+        }
         public async Task<string> UpdateRecord<T>(string table, int id, T record)
         {
             await DeleteRecord<T>(table, id);
@@ -53,7 +74,7 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
             return "Updated Successfully";
         }
 
-        public async Task<string> UpdateRecord<T>(string table, int id, T _, string field, string value)
+        public async Task<string> UpdateRecord<T>(string table, string id, T _, string field, string value)
         {
             var collection = db.GetCollection<T>(table);
             var filter = Builders<T>.Filter.Eq("Id", id);
@@ -61,7 +82,7 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
             await collection.UpdateOneAsync(filter, update);
             return "Updated Successfully";
         }
-        public async Task<string> UpdateRecord<T>(string table, int id, T _, string field, int value)
+        public async Task<string> UpdateRecord<T>(string table, string id, T _, string field, int value)
         {
             var collection = db.GetCollection<T>(table);
             var filter = Builders<T>.Filter.Eq("Id", id);
@@ -96,6 +117,14 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
             await collection.DeleteOneAsync(filter);
             return "Deleted Successfully";
         }
+        public async Task<string> DeleteRecord<T>(string table, string id)
+        {
+            var collection = db.GetCollection<T>(table);
+            var filter = Builders<T>.Filter.Eq("Id", id);
+
+            await collection.DeleteOneAsync(filter);
+            return "Deleted Successfully";
+        }
 
         public async Task<long> GetCollectionSize<T>(string table)
         {
@@ -110,6 +139,32 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
             var next = recs[0].display_id;
             await UpdateRecord<Seq>("Sequences", recs[0]._id, new Seq { _id = recs[0]._id, display_id = next + 1 }, "display_id", next + 1);
             return next;
+        }
+
+        public async Task<int> getNextCodeIncrement(string code)
+        {
+            var collection = db.GetCollection<CodeElement>("Codes");
+            var filter = Builders<CodeElement>.Filter.Eq("code", code);
+            var result = await collection.FindAsync(filter);
+            List<CodeElement> codes = result.ToList();
+            if(codes.Count == 0)
+            {
+                CodeElement new_code = new CodeElement();
+                new_code.code = code;
+                new_code.nextVal = 1;
+                await InsertRecord<CodeElement>("Codes", new_code);
+                return 1;
+            }
+            else
+            {
+                var nextID = codes[0].nextVal;
+                await collection.DeleteOneAsync(filter);
+                CodeElement new_code = new CodeElement();
+                new_code.code = code;
+                new_code.nextVal = nextID + 1;
+                await InsertRecord<CodeElement>("Codes", new_code);
+                return nextID;
+            }
         }
     }
 }

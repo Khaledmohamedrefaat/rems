@@ -35,7 +35,7 @@ namespace Real_Estate_Managment_Software___GUI
             InitializeComponent();
             this.building = building;
             button2.Visible = button3.Visible = false;
-            textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = false;
+            textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = textBox6.Visible = false;
             inUpdate = false;
             unitsLabel = lbl_UnitsID;
             imgsLabel = lbl_ImagesID;
@@ -64,14 +64,17 @@ namespace Real_Estate_Managment_Software___GUI
             await building.LoadUnits(building.Model.Units);
             lbl_ID.Text = building.Model.Id.ToString();
             lbl_Area.Text = building.Model.Area.ToString();
-            lbl_Address.Text = building.Model.Address;
-            lbl_Price.Text = building.Model.price.ToString();
+            lbl_Address.Text = building.Model.City;
+            label10.Text = building.Model.Governorate;
+            lbl_Price.Text = building.Model.Street;
             lbl_Status.Text = building.Model.Status;
             label6.Text = building.Model.orderID.ToString();
+
             textBox1.Text = building.Model.Id.ToString();
             textBox2.Text = building.Model.Area.ToString();
-            textBox3.Text = building.Model.Address;
-            textBox4.Text = building.Model.price.ToString();
+            textBox3.Text = building.Model.City;
+            textBox4.Text = building.Model.Governorate;
+            textBox6.Text = building.Model.Street;
             textBox5.Text = building.Model.Status;
             unitsLabel.Text = imgsLabel.Text = "";
             foreach (SIPair sIPair in building.Model.Units)
@@ -210,7 +213,7 @@ namespace Real_Estate_Managment_Software___GUI
             if (inUpdate == false){
                 inUpdate = true;
                 button2.Visible = button3.Visible = true;
-                textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = true;
+                textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = textBox6.Visible = true;
                 lbl_Address.Visible = lbl_ID.Visible = lbl_Area.Visible = lbl_Price.Visible = lbl_Status.Visible = false;
                 button12.Visible = button13.Visible = button8.Visible = button1.Visible = false;
                 updBuilding = new Building(building.Model);
@@ -220,14 +223,15 @@ namespace Real_Estate_Managment_Software___GUI
                     return;
                 inUpdate = false;
                 button2.Visible = button3.Visible = false;
-                textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = false;
+                textBox1.Visible = textBox2.Visible = textBox3.Visible = textBox4.Visible = textBox5.Visible = textBox6.Visible = false;
                 lbl_Address.Visible = lbl_ID.Visible = lbl_Area.Visible = lbl_Price.Visible = lbl_Status.Visible = true;
                 button8.Visible = button1.Visible = true;
-                updBuilding.Model.Id = Convert.ToInt32(textBox1.Text);
+                updBuilding.Model.Id = textBox1.Text;
                 updBuilding.Model.Area = Convert.ToInt32(textBox2.Text);
-                updBuilding.Model.price = Convert.ToInt32(textBox4.Text);
-                updBuilding.Model.Address = textBox3.Text;
-                updBuilding.Model.Status = textBox5.Text;
+                updBuilding.Model.City = textBox3.Text;
+                    updBuilding.Model.Governorate = textBox4.Text;
+                    updBuilding.Model.Street = textBox4.Text;
+                    updBuilding.Model.Status = textBox5.Text;
                     Freeze();
                     await Building.UpdateBuilding(updBuilding.Model, table);
                 await LoadInfo();

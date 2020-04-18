@@ -33,6 +33,7 @@ namespace Real_Estate_Managment_Software___GUI
         static Label unitsLbl;
         bool hasUnits;
         string from, table;
+        static SIPair mainassetID;
         SIPair assetId;
         public AddRecord(bool hasUnits, string from, SIPair assetId, string table)
         {
@@ -41,8 +42,16 @@ namespace Real_Estate_Managment_Software___GUI
             comboBox1.Visible = false;
             lbl_Status.Text = label2.Text = "";
             addImages = new List<int>();
-            if(hasUnits)
+            if (hasUnits)
+            {
+                label8.Visible = textBox6.Visible = false;
+                
                 unitsLbl = lbl_Status;
+            }
+            else
+            {
+                label10.Visible = textBox7.Visible = false;
+            }
             this.from = from;
             this.assetId = assetId;
             this.table = table;
@@ -71,9 +80,14 @@ namespace Real_Estate_Managment_Software___GUI
             }
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private async void button8_Click(object sender, EventArgs e)
         {
-            using (AddRecord addRecord = new AddRecord(false, "Unit", new SIPair(table, assetId.Id), table))
+            if(mainassetID == null){
+                var code = await Asset.GenerateCode(table, textBox4.Text, textBox2.Text);
+                mainassetID = new SIPair(table, code);
+            }
+
+            using (AddRecord addRecord = new AddRecord(false, "Unit", mainassetID, table))
                 addRecord.ShowDialog();
         }
 
@@ -81,15 +95,14 @@ namespace Real_Estate_Managment_Software___GUI
         {
             if (!Validator.IsArea(textBox1.Text))
                 return false;
-            if (!Validator.IsPrice(textBox3.Text))
+            if (!Validator.IsAddress(textBox3.Text))
                 return false;
             if (!Validator.IsAddress(textBox2.Text))
                 return false;
+            if (!Validator.IsAddress(textBox4.Text))
+                return false;
+            if (!hasUnits && !Validator.IsPrice(textBox5.Text)) ;
             return true;
-        }
-        public void Loading()
-        {
-            Application.Run(new LoadingBox());
         }
 
         public async Task<bool> checkDuplicate(BuildingModel model, string table)
@@ -98,7 +111,7 @@ namespace Real_Estate_Managment_Software___GUI
             {
 
                 var tmp = model.Id;
-                model.Id = -1;
+                model.Id = "";
                 Freeze();
                 var retList = await Building.getAllModels(model, table);
                 UnFreeze();
@@ -115,7 +128,7 @@ namespace Real_Estate_Managment_Software___GUI
         {
             try { 
             var tmp = model.Id;
-            model.Id = -1;
+            model.Id = "";
                 Freeze();
             var retList = await Apartment.getAllModels(model, table);
                 UnFreeze();
@@ -133,7 +146,7 @@ namespace Real_Estate_Managment_Software___GUI
         {
             try { 
             var tmp = model.Id;
-            model.Id = -1;
+            model.Id = "";
                 Freeze();
             var retList = await AgriculturalLand.getAllModels(model);
                 UnFreeze();
@@ -150,7 +163,7 @@ namespace Real_Estate_Managment_Software___GUI
         {
             try { 
             var tmp = model.Id;
-            model.Id = -1;
+            model.Id = "";
                 Freeze();
             var retList = await Land.getAllModels(model);
                 UnFreeze();
@@ -167,7 +180,7 @@ namespace Real_Estate_Managment_Software___GUI
         {
             try{ 
             var tmp = model.Id;
-            model.Id = -1;
+            model.Id = "";
                 Freeze();
             var retList = await Villa.getAllModels(model);
                 UnFreeze();
@@ -184,7 +197,7 @@ namespace Real_Estate_Managment_Software___GUI
         {
             try { 
             var tmp = model.Id;
-            model.Id = -1;
+            model.Id = "";
                 Freeze();
             var retList = await Storage.getAllModels(model);
                 UnFreeze();
@@ -201,7 +214,7 @@ namespace Real_Estate_Managment_Software___GUI
         {
             try { 
             var tmp = model.Id;
-            model.Id = -1;
+            model.Id = "";
                 Freeze();
             var retList = await Store.getAllModels(model);
                 UnFreeze();
@@ -226,13 +239,21 @@ namespace Real_Estate_Managment_Software___GUI
                 MongoDBConnection db = new MongoDBConnection();
                 model.Id = assetId.Id;
                 model.Area = Convert.ToInt32(textBox1.Text);
-                model.price = Convert.ToInt32(textBox3.Text);
-                model.Address = textBox2.Text;
+                model.Governorate = textBox2.Text;
+                model.City = textBox4.Text;
+                model.Street = textBox3.Text;
                 model.Units = addUnits;
                 model.Status = "Available";
                 addUnits = new List<SIPair>();
                 model.ImagesIds = addImages;
-                model.assetID = new SIPair("", -1);
+                model.assetID = new SIPair("", "-0");
+                    model.numFloors = Convert.ToInt32(textBox7.Text);
+                    if (mainassetID == null)
+                    {
+                        var code = await Asset.GenerateCode(table, textBox4.Text, textBox2.Text);
+                        mainassetID = new SIPair(table, code);
+                    }
+                    model.Id = mainassetID.Id;
                     Freeze();
                 if (await checkDuplicate(model, table))
                 {
@@ -242,6 +263,7 @@ namespace Real_Estate_Managment_Software___GUI
                 }
                 await Asset.Insert(model, table);
                 MessageBox.Show("Added " + table.Remove(table.Length - 1) +" Successfully");
+                    mainassetID = null;
                 Close();
 
             }
@@ -258,23 +280,31 @@ namespace Real_Estate_Managment_Software___GUI
                 {
                     ApartmentModel model = new ApartmentModel();
                     MongoDBConnection db = new MongoDBConnection();
-                        Freeze();
-                    var nextId = await db.GetNextSeqVal(table);
-                    model.Id = nextId;
-                        UnFreeze();
                     model.Area = Convert.ToInt32(textBox1.Text);
-                    model.price = Convert.ToInt32(textBox3.Text);
-                    model.Address = textBox2.Text;
+                    model.price = Convert.ToInt32(textBox5.Text);
+                    model.Governorate = textBox2.Text;
+                    model.City = textBox4.Text;
+                    model.Street = textBox3.Text;
                     model.ImagesIds = addImages;
                     model.Status = "Available";
+                        string building_id = "";
+                        int idx = -1;
+                        for (int i = 0; i < assetId.Id.Length; ++i)
+                            if (assetId.Id[i] == '-')
+                                idx = i;
+                        for (int i = idx + 1; i < assetId.Id.Length; ++i)
+                            building_id += assetId.Id[i];
+                        var nextId = Asset.GenerateCode("Apartments", model.City, model.Governorate, textBox6.Text, building_id);
+                    model.Id = nextId;
                     model.assetID = assetId;
-                        Freeze();
-                        if (await checkDuplicate(model, "Apartments"))
+                        
+                    Freeze();
+                    if (await checkDuplicate(model, "Apartments"))
                     {
-                            UnFreeze();
-                            if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
+                        UnFreeze();
+                        if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
                         {
-                            model.Id = -1;
+                            model.Id = "";
                                 Freeze();
                             var retList = await Apartment.getAllModels(model, "Apartments");
                                 UnFreeze();
@@ -284,9 +314,9 @@ namespace Real_Estate_Managment_Software___GUI
                         }
                         return "Done";
                     }
-                        Freeze();
+                    Freeze();
                     await Asset.Insert(model, table);
-                        UnFreeze();
+                    UnFreeze();
                     addLabels(nextId);
                     MessageBox.Show("Added Apartment Successfully");
                     Close();
@@ -295,23 +325,31 @@ namespace Real_Estate_Managment_Software___GUI
                 {
                     StorageModel model = new StorageModel();
                     MongoDBConnection db = new MongoDBConnection();
-                        Freeze();
-                    var nextId = await db.GetNextSeqVal(table);
-                        UnFreeze();
-                    model.Id = nextId;
+
                     model.Area = Convert.ToInt32(textBox1.Text);
-                    model.price = Convert.ToInt32(textBox3.Text);
-                    model.Address = textBox2.Text;
+                    model.price = Convert.ToInt32(textBox5.Text);
+                    model.Governorate = textBox2.Text;
+                    model.City = textBox4.Text;
+                    model.Street = textBox3.Text;
                     model.ImagesIds = addImages;
                     model.Status = "Available";
                     model.assetID = assetId;
+                        string building_id = "";
+                        int idx = -1;
+                        for (int i = 0; i < assetId.Id.Length; ++i)
+                            if (assetId.Id[i] == '-')
+                                idx = i;
+                        for (int i = idx + 1; i < assetId.Id.Length; ++i)
+                            building_id += assetId.Id[i];
+                        var nextId = Asset.GenerateCode("Storages", model.City, model.Governorate, textBox6.Text, building_id);
+                        model.Id = nextId;
                         Freeze();
                     if (await checkDuplicate(model))
                     {
                             UnFreeze();
                         if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
                         {
-                            model.Id = -1;
+                            model.Id = "";
                                 Freeze();
                             var retList = await Storage.getAllModels(model);
                                 UnFreeze();
@@ -334,23 +372,30 @@ namespace Real_Estate_Managment_Software___GUI
                 {
                     StoreModel model = new StoreModel();
                     MongoDBConnection db = new MongoDBConnection();
-                        Freeze();
-                    var nextId = await db.GetNextSeqVal(table);
-                        UnFreeze();
-                        model.Id = nextId;
                     model.Area = Convert.ToInt32(textBox1.Text);
-                    model.price = Convert.ToInt32(textBox3.Text);
-                    model.Address = textBox2.Text;
+                    model.price = Convert.ToInt32(textBox5.Text);
+                    model.Governorate = textBox2.Text;
+                    model.City = textBox4.Text;
+                    model.Street = textBox3.Text;
                     model.ImagesIds = addImages;
                     model.Status = "Available";
                     model.assetID = assetId;
+                        string building_id = "";
+                        int idx = -1;
+                        for (int i = 0; i < assetId.Id.Length; ++i)
+                            if (assetId.Id[i] == '-')
+                                idx = i;
+                        for (int i = idx + 1; i < assetId.Id.Length; ++i)
+                            building_id += assetId.Id[i];
+                        var nextId = Asset.GenerateCode("Stores", model.City, model.Governorate, textBox6.Text, building_id);
+                        model.Id = nextId;
                         Freeze();
                         if (await checkDuplicate(model))
                     {
                             UnFreeze();
                             if ((MessageBox.Show("Unit is Duplicate, Want To add old one instead ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes))
                         {
-                            model.Id = -1;
+                            model.Id = "";
                                 Freeze();
                                 var retList = await Store.getAllModels(model);
                                 UnFreeze();
@@ -380,7 +425,7 @@ namespace Real_Estate_Managment_Software___GUI
             }
         }
 
-        public void addLabels(int nextId){
+        public void addLabels(string nextId){
             string table = comboBox1.Text;
             if (from == "Unit")
             {

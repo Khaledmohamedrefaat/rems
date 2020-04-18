@@ -25,9 +25,11 @@ namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
             MongoDBConnection db = new MongoDBConnection();
             var collection = db.db.GetCollection<FactoryModel>("Factories");
             var filter = Builders<FactoryModel>.Filter.Empty;
-            if (record.Id != -1) filter &= Builders<FactoryModel>.Filter.Eq("Id", record.Id);
+            if (record.Id != "") filter &= Builders<FactoryModel>.Filter.Eq("Id", record.Id);
             if (record.Area != -1) filter &= Builders<FactoryModel>.Filter.Eq("Area", record.Area);
-            if (record.Address != "") filter &= Builders<FactoryModel>.Filter.Eq("Address", record.Address);
+            if (record.City != "") filter &= Builders<FactoryModel>.Filter.Eq("City", record.City);
+            if (record.Governorate != "") filter &= Builders<FactoryModel>.Filter.Eq("Governorate", record.Governorate);
+            if (record.Street != "") filter &= Builders<FactoryModel>.Filter.Eq("Address", record.Street);
             if (record.Status != "") filter &= Builders<FactoryModel>.Filter.Eq("Status", record.Status);
             if (record.price != -1) filter &= Builders<FactoryModel>.Filter.Eq("price", record.price);
             var ret = await collection.FindAsync<FactoryModel>(filter);

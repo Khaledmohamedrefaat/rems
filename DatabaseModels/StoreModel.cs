@@ -8,7 +8,6 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
 {
     public class StoreModel : AssetModel
     {
-
         public StoreModel() : base()
         {
 

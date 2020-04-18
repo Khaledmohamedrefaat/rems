@@ -19,10 +19,37 @@ namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
             Storages = new List<Storage>();
             Stores = new List<Store>();
         }
+
+        public static async Task<string> GenerateCode(string typ, string city, string gov)
+        {
+            string full_code = "";
+            full_code += char.ToUpper(typ[0]);
+            full_code += '-';
+            full_code += char.ToUpper(city[0]);
+            full_code += char.ToUpper(gov[0]);
+            MongoDBConnection db = new MongoDBConnection();
+            int ret = await db.getNextCodeIncrement(full_code);
+            full_code += '-';
+            full_code += ret.ToString();
+            return full_code;
+        }
+        public static string GenerateCode(string typ, string city, string gov, string unit_code, string asset_id)
+        {
+            string full_code = "";
+            full_code += char.ToUpper(typ[0]);
+            full_code += '-';
+            full_code += char.ToUpper(city[0]);
+            full_code += char.ToUpper(gov[0]);
+            //full_code += '-';
+            //full_code += asset_id;
+            full_code += '-';
+            full_code += unit_code;
+            return full_code;
+        }
         public async Task<string> LoadAssetById(SIPair unit)
         {
             string table = unit.Typ;
-            int id = unit.Id;
+            string id = unit.Id;
             if (table == "Buildings")
             {
                 return "No need to Add Something";
@@ -98,7 +125,7 @@ namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
             return "Done";
         }
 
-        public static async Task<string> Sell<T>(Sold sellOrder, T assetObj, string table, int Id)
+        public static async Task<string> Sell<T>(Sold sellOrder, T assetObj, string table, string Id)
         {
             MongoDBConnection db = new MongoDBConnection();
             await db.InsertRecord<SoldModel>("Sold", sellOrder.Model);
@@ -107,7 +134,7 @@ namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
             return "Done";
         }
 
-        public static async Task<string> Rent<T>(Rental rentOrder, T assetObj, string table, int Id)
+        public static async Task<string> Rent<T>(Rental rentOrder, T assetObj, string table, string Id)
         {
             MongoDBConnection db = new MongoDBConnection();
             await db.InsertRecord<RentalModel>("Rentals", rentOrder.Model);
@@ -116,15 +143,8 @@ namespace Real_Estate_Managment_Software___GUI.FunctionalClasses
             return "Done";
         }
 
-        public static async Task<string> getInstallment<T>(T assetObj, string table, int orderID)
-        {
-            MongoDBConnection db = new MongoDBConnection();
-            SoldModel sellOrder = await db.LoadRecordById<SoldModel>("Sold", orderID);
-            await db.UpdateRecord<SoldModel>("Sold", orderID, sellOrder, "AmountCollected", sellOrder.AmountCollected + sellOrder.InstallPrice);
-            return "Done";
-        }
 
-        public static async Task<string> Delete<T>(T assetObj, string table, int id)
+        public static async Task<string> Delete<T>(T assetObj, string table, string id)
         {
             MongoDBConnection db = new MongoDBConnection();
             await db.DeleteRecord<T>(table, id);

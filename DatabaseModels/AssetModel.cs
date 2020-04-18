@@ -14,8 +14,8 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
         public Guid Mongo_id;
         */
         public string Typ;
-        public int Id;
-        public SIPair(string typ, int id)
+        public string Id;
+        public SIPair(string typ, string id)
         {
             this.Typ = typ;
             this.Id = id;
@@ -25,10 +25,13 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
     {
         [BsonId]
         public Guid Mongo_id { get; set; }
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int Area { get; set; }
         public string Status { get; set; }
-        public string Address { get; set; }
+        public string City { get; set; }
+        public string Governorate { get; set; }
+
+        public string Street { get; set; }
         public List<SIPair> Units { get; set; }
         public List<int> ImagesIds { get; set; }
 
@@ -36,6 +39,7 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
 
         public int orderID { get; set; }
 
+        public int numFloors { get; set; }
         public SIPair assetID { get; set; }
         public AssetModel()
         {
@@ -46,7 +50,6 @@ namespace Real_Estate_Managment_Software___GUI.DatabaseModels
         {
             this.Area = area;
             this.Status = status;
-            this.Address = address;
             this.Units = units;
             this.ImagesIds = imagesIds;
         }

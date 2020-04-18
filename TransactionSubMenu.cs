@@ -110,7 +110,7 @@ namespace Real_Estate_Managment_Software___GUI
                 searchSoldModel = new SoldModel();
                 searchSoldModel.Name = tbx_Filter_ID.Text;
                 if(tbx_Filter_Address.Text != "")
-                    searchSoldModel.AssetId = new SIPair(comboBox1.SelectedItem.ToString(), Convert.ToInt32(tbx_Filter_Address.Text));
+                    searchSoldModel.AssetId = new SIPair(comboBox1.SelectedItem.ToString(), tbx_Filter_Address.Text);
                     Freeze(); 
                     await RefreshSoldContent();
                     UnFreeze();
@@ -120,7 +120,7 @@ namespace Real_Estate_Managment_Software___GUI
                 searchrentModel = new RentalModel();
                 searchrentModel.Name = tbx_Filter_ID.Text;
                 if (tbx_Filter_Address.Text != "")
-                    searchrentModel.AssetId = new SIPair(comboBox1.SelectedItem.ToString(), Convert.ToInt32(tbx_Filter_Address.Text));
+                    searchrentModel.AssetId = new SIPair(comboBox1.SelectedItem.ToString(), tbx_Filter_Address.Text);
                     Freeze();
                     await RefreshRentalContent();
                     UnFreeze();

@@ -64,12 +64,36 @@ namespace Real_Estate_Managment_Software___GUI
             searchModel = new BuildingModel();
             
             if (tbx_Filter_ID.Text != "")
-                searchModel.Id = Convert.ToInt32(tbx_Filter_ID.Text);
+                searchModel.Id = tbx_Filter_ID.Text;
             else
-                searchModel.Id = -1;
+                searchModel.Id = "";
                 searchModel.Area = -1;
                 searchModel.price = -1;
-            searchModel.Address = tbx_Filter_Address.Text;
+                string full_address = tbx_Filter_Address.Text;
+                List<string> detailed_address = new List<string>();
+                string tmp = "";
+                for (int i = 0; i < full_address.Length; ++i)
+                {
+                    if (full_address[i] == '-') continue;
+                    if (full_address[i] == ' ')
+                    {
+                        if (tmp != "")
+                            detailed_address.Add(tmp);
+                        tmp = "";
+                    }
+                    tmp += full_address[i];
+                }
+                if (detailed_address.Count > 0) searchModel.City = detailed_address[0];
+                else searchModel.City = "";
+                if (detailed_address.Count > 1) searchModel.Governorate = detailed_address[0];
+                else searchModel.Governorate = "";
+                if (detailed_address.Count > 2) searchModel.Street = detailed_address[0];
+                else searchModel.Street = "";
+                if (detailed_address.Count > 3)
+                {
+                    MessageBox.Show("The Address Format is invalid.");
+                    return;
+                }
             searchModel.Status = "";
                 Freeze();
             await RefreshContent(table);
@@ -111,10 +135,7 @@ namespace Real_Estate_Managment_Software___GUI
         {
             try { 
             MongoDBConnection db = new MongoDBConnection();
-                Freeze();
-                var nextId = await db.GetNextSeqVal("Images");
-                UnFreeze();
-                using (AddRecord addRecord = new AddRecord(true, "Main", new SIPair(table, nextId), table))
+                using (AddRecord addRecord = new AddRecord(true, "Main", new SIPair("", ""), table))
                 addRecord.ShowDialog();
             }
             catch (Exception _)
@@ -132,11 +153,13 @@ namespace Real_Estate_Managment_Software___GUI
         {
             try { 
             searchModel = new BuildingModel();
-            searchModel.Id = -1;
+            searchModel.Id = "";
             searchModel.Area = -1;
             searchModel.price = -1;
-            searchModel.Address = "";
-            searchModel.Status = "";
+                searchModel.City = "";
+                searchModel.Governorate = "";
+                searchModel.Street = "";
+                searchModel.Status = "";
 
                 Freeze();
             await RefreshContent(table);

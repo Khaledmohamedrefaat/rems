@@ -37,7 +37,13 @@ namespace Real_Estate_Managment_Software___GUI
         {
             label3.Text = apartment.Model.Id.ToString();
             label4.Text = apartment.Model.Area.ToString();
-            label5.Text = apartment.Model.Address.ToString();
+            string full_address = "";
+            full_address += apartment.Model.City;
+            full_address += " - ";
+            full_address += apartment.Model.Governorate;
+            full_address += " - ";
+            full_address += apartment.Model.Street;
+            label5.Text = full_address;
             label6.Text = apartment.Model.price.ToString();
             label7.Text = apartment.Model.Status.ToString();
         }
@@ -58,7 +64,7 @@ namespace Real_Estate_Managment_Software___GUI
                     {
                         chk.Id = apartment.Model.assetID.Id;
                         chk.Area = chk.price = -1;
-                        chk.Address = chk.Status = "";
+                        chk.City = chk.Governorate = chk.Street = chk.Status = "";
                         string parTable = apartment.Model.assetID.Typ;
                         if (parTable != "")
                         {
@@ -138,13 +144,16 @@ namespace Real_Estate_Managment_Software___GUI
                 StorageModel s = new StorageModel();
                 s.Id = apartment.Model.Id;
                 s.Mongo_id = apartment.Model.Mongo_id;
-                s.Address = apartment.Model.Address;
+                s.City = apartment.Model.City;
+                s.Governorate = apartment.Model.Governorate;
+                s.Street = apartment.Model.Street;
                 s.Area = apartment.Model.Area;
                 s.assetID = apartment.Model.assetID;
                 s.ImagesIds = apartment.Model.ImagesIds;
                 s.price = apartment.Model.price;
                 s.Status = apartment.Model.Status;
                 s.Units = apartment.Model.Units;
+                s.orderID = apartment.Model.orderID;
                 tmp.Storages.Add(new Storage(s));
             }
             else if (table == "Stores")
@@ -152,13 +161,16 @@ namespace Real_Estate_Managment_Software___GUI
                 StoreModel s = new StoreModel();
                 s.Id = apartment.Model.Id;
                 s.Mongo_id = apartment.Model.Mongo_id;
-                s.Address = apartment.Model.Address;
+                s.City = apartment.Model.City;
+                s.Governorate = apartment.Model.Governorate;
+                s.Street = apartment.Model.Street;
                 s.Area = apartment.Model.Area;
                 s.assetID = apartment.Model.assetID;
                 s.ImagesIds = apartment.Model.ImagesIds;
                 s.price = apartment.Model.price;
                 s.Status = apartment.Model.Status;
                 s.Units = apartment.Model.Units;
+                s.orderID = apartment.Model.orderID;
                 tmp.Stores.Add(new Store(s));
             }
             using (ApartInfo infoRecord = new ApartInfo(tmp))
